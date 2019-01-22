@@ -1,17 +1,41 @@
 #include "ofApp.h"
 
+#include "Boid.h"
+#include "Kinematic.h"
+
+#include <graphics/ofGraphics.h>
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
+	ofSetCircleResolution(64);
+	
+	Kinematic initalKinematic(glm::vec2(0, HEIGHT), 0, glm::vec2(10, 0), 0);
+	Boid initialBoid(initalKinematic);
 
+	mBoids.push_back(initialBoid);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	for (auto& boid : mBoids)
+		boid.Update(ofGetLastFrameTime());
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	
+	ofBackground(20);
+	//mCamera.begin();
+
+
+	for (const auto& boid : mBoids)
+		boid.Draw();
+
+	ofSetColor(255);
+
+	//mCamera.end();
 
 }
 

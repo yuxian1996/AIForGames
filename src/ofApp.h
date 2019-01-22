@@ -2,6 +2,8 @@
 
 #include "ofMain.h"
 
+#include "Boid.h"
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -20,5 +22,9 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
+
+private:
+	std::vector<Boid> mBoids;
+	const int WIDTH = 1024;
+	const int HEIGHT = 768;
 };
