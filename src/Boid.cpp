@@ -1,33 +1,75 @@
 #include "Boid.h"
 
-#include "Steering.h"
+#include "Steering/Steering.h"
 #include "SteeringOutput.h"
 
 #include <ofGraphics.h>
 
+Boid::~Boid()
+{
+	// delete every steering behavior
+	for (auto steering : mpKinematicSteering)
+	{
+		delete steering;
+	}
+	for (auto steering : mpDynamicSteering)
+	{
+		delete steering;
+	}
+
+	mpKinematicSteering.clear();
+	mpDynamicSteering.clear();
+}
+
 void Boid::Draw() const
 {
-	ofDrawCircle(mKinematic.position.x, mKinematic.position.y, 0, mRadius);
+	// draw footprint
+	mFootprint.Draw();
 
-	glm::vec3 point1, point2, point3;
-	point1 = glm::vec3(mKinematic.position.x + cos(mKinematic.orientation) * 2 * mRadius, mKinematic.position.y + sin(mKinematic.orientation) * 2 * mRadius, 0);
-	point2 = glm::vec3(mKinematic.position.x + sin(mKinematic.orientation) * mRadius, mKinematic.position.y + cos(mKinematic.orientation) * mRadius, 0);
-	point3 = glm::vec3(mKinematic.position.x + sin(mKinematic.orientation) * mRadius, mKinematic.position.y - cos(mKinematic.orientation) * mRadius, 0);
+	// draw circle
+	ofSetColor(255);
+	ofDrawCircle(mKinematic.position, mRadius);
+
+	// draw triangle
+	glm::vec2 point1, point2, point3;
+	point1 = glm::vec2(mKinematic.position.x + cos(mKinematic.orientation) * 2 * mRadius, mKinematic.position.y + sin(mKinematic.orientation) * 2 * mRadius);
+	point2 = glm::vec2(mKinematic.position.x + sin(mKinematic.orientation) * mRadius, mKinematic.position.y - cos(mKinematic.orientation) * mRadius);
+	point3 = glm::vec2(mKinematic.position.x - sin(mKinematic.orientation) * mRadius, mKinematic.position.y + cos(mKinematic.orientation) * mRadius);
 	ofDrawTriangle(point1, point2, point3);
+
 }
 
 void Boid::Update(float inDeltaTime)
 {
-	for (const auto& steering : mpSteerings)
+	const auto& oldOrientation = mKinematic.orientation;
+	
+	// update dynamic steering only if it has dynamic steering
+	if (mpDynamicSteering.size() != 0)
 	{
-		auto steeringOutput = steering->GetSteeringOutput();
-		if (DynamicSteeringOutput* dynamicOutput = dynamic_cast<DynamicSteeringOutput*>(steeringOutput))
-		{
-			mKinematic.Update(*dynamicOutput, inDeltaTime);
-		}
-		else if (KinematicSteeringOutput* kinematicOutput = dynamic_cast<KinematicSteeringOutput*>(steeringOutput))
-		{
-			mKinematic.Update(*kinematicOutput, inDeltaTime);
-		}
+		DynamicSteeringOutput* dynamicOutput = mpDynamicSteering[0]->GetSteeringOutput();
+		mKinematic.Update(*dynamicOutput, inDeltaTime);
+		delete dynamicOutput;
+
+		// orientation match steering
+		mKinematic.orientation = acos(mKinematic.position.x / mKinematic.position.length());
+		if (mKinematic.position.y < 0)
+			mKinematic.orientation = -mKinematic.orientation;
+
 	}
+	else if (mpKinematicSteering.size() != 0)
+	{
+		KinematicSteeringOutput* kinematicOutput = mpKinematicSteering[0]->GetSteeringOutput();
+		mKinematic.Update(*kinematicOutput, inDeltaTime);
+		delete kinematicOutput;
+	}
+
+	// update footprint
+	mTime -= inDeltaTime;
+	if (mTime <= 0)
+	{
+		mFootprint.AddPoints(mKinematic.position);
+		mTime = mFoorPrinttInterval;
+	}
+	mFootprint.Update(inDeltaTime);
+
 }

@@ -19,5 +19,7 @@ struct Kinematic
 
 	void Update(const DynamicSteeringOutput& inSteering, const float inDeltaTime);
 	void Update(const KinematicSteeringOutput& inSteering, const float inDeltaTime);
+
+	static float ComputeOrientation(const glm::vec2& inPosition);
 };
 

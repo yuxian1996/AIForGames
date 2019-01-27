@@ -16,8 +16,17 @@
     <ClCompile Include="src\SteeringOutput.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Steering.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\Steering\BasicKinematicSteering.cpp">
+      <Filter>src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\Steering.cpp">
+      <Filter>src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Notation\Notation.cpp">
+      <Filter>src\Notation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\SeekSteering.cpp">
+      <Filter>src\Steering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +35,9 @@
     </Filter>
     <Filter Include="src\Steering">
       <UniqueIdentifier>{d9ec58ca-1144-41da-9ee1-7deafeed7279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Notation">
+      <UniqueIdentifier>{e60035ae-9553-4814-92d3-9258b0704e84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,8 +53,20 @@
     <ClInclude Include="src\SteeringOutput.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Steering.h">
+    <ClInclude Include="src\Steering\BasicKinematicSteering.h">
+      <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\Steering.h">
+      <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Notation\Notation.h">
+      <Filter>src\Notation</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\SeekSteering.h">
+      <Filter>src\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
