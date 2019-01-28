@@ -186,7 +186,12 @@
     <ClCompile Include="src\Notation\Notation.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\Steering\AlignSteering.cpp" />
+    <ClCompile Include="src\Steering\ArriveSteering.cpp" />
     <ClCompile Include="src\Steering\BasicKinematicSteering.cpp" />
+    <ClCompile Include="src\Steering\ComplexSteering\Flocking.cpp" />
+    <ClCompile Include="src\Steering\ComplexSteering\SeekArrive.cpp" />
+    <ClCompile Include="src\Steering\SeperationSteering.cpp" />
     <ClCompile Include="src\Steering\SeekSteering.cpp" />
     <ClCompile Include="src\Steering\Steering.cpp" />
     <ClCompile Include="src\Steering\WanderSteering.cpp" />
@@ -194,11 +199,17 @@
   <ItemGroup>
     <ClInclude Include="Manager.hpp" />
     <ClInclude Include="src\Boid.h" />
+    <ClInclude Include="src\Group.h" />
     <ClInclude Include="src\Kinematic.h" />
     <ClInclude Include="src\Notation\Notation.h" />
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Steering\AlignSteering.h" />
+    <ClInclude Include="src\Steering\ArriveSteering.h" />
     <ClInclude Include="src\Steering\BasicKinematicSteering.h" />
+    <ClInclude Include="src\Steering\ComplexSteering\Flocking.h" />
+    <ClInclude Include="src\Steering\ComplexSteering\SeekArrive.h" />
+    <ClInclude Include="src\Steering\SeperationSteering.h" />
     <ClInclude Include="src\Steering\SeekSteering.h" />
     <ClInclude Include="src\Steering\Steering.h" />
     <ClInclude Include="src\Steering\WanderSteering.h" />

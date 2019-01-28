@@ -5,16 +5,20 @@
 
 class KinematicSteering;
 class DynamicSteering;
+class Group;
 
 class Boid
 {
 public:
 	// Constructor 
 	Boid() {}
-	Boid(const Kinematic& inKinematic, Kinematic* ipTarget, float inMaxSpeed, float inMaxRotation, float inMaxAcceleration, float inMaxAngular, float inTargetRadius = 0,
-		float inSlowRadius = 0, float inTimeToTarget = 0, float inWanderDistance = 0, float inWanderRadius = 0) : mKinematic(inKinematic), mpTarget(ipTarget), mMaxSpeed(inMaxSpeed),
-		mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration), mMaxAngular(inMaxAngular), mTargetRadius(inTargetRadius), mSlowRadius(inSlowRadius), 
-		mTimeToTarget(inTimeToTarget), mWanderDistance(inWanderDistance), mWanderRadius(inWanderRadius) {};
+	Boid(const Kinematic& inKinematic, Kinematic* ipTarget, float inMaxSpeed, float inMaxRotation, float inMaxAcceleration, float inMaxAngular,
+		float inTargetRadius = 0, float inSlowRadius = 0, float inTimeToTarget = 0, float inWanderDistance = 0, float inWanderRadius = 0,
+		float inSlowAngleThreshold = 0, float inTargetAngleThreshold = 0, float inTimeToAngleTarget = 0, float k = 10000) : mKinematic(inKinematic), mpTarget(ipTarget),
+		mMaxSpeed(inMaxSpeed), mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration), mMaxAngularAcc(inMaxAngular), mTargetRadius(inTargetRadius), 
+		mSlowRadius(inSlowRadius), mTimeToTarget(inTimeToTarget), mWanderDistance(inWanderDistance), mWanderRadius(inWanderRadius),
+		mSlowAngleThreshold(inSlowAngleThreshold), mTargetAngleThreshold(inTargetAngleThreshold), mTimeToAngleTarget(inTimeToAngleTarget), K(k),
+		mColor(255){};
 	~Boid();
 
 	// Getter & Setter
@@ -27,25 +31,41 @@ public:
 	// Update Boid
 	void Update(float inDeltaTime);
 
+	void SetGroup(const Group* inGroup) { mpGroup = inGroup; }
+	void SetLeader(const Boid* ipLeader) { mpLeader = ipLeader; }
+
+	void SetColor(ofColor inColor) { mColor = inColor; }
+
 public:
 	Kinematic mKinematic;
-	Kinematic* mpTarget;
+	const Kinematic* mpTarget;
+
+	const Group* mpGroup;
+	const Boid* mpLeader;
 	float mMaxSpeed;
 	float mMaxRotation;
 	float mMaxAcceleration;
-	float mMaxAngular;
+	float mMaxAngularAcc;
 	float mTargetRadius;
 	float mSlowRadius;
 	float mTimeToTarget;
 	float mWanderDistance;
 	float mWanderRadius;
+	float mSlowAngleThreshold;
+	float mTargetAngleThreshold;
+	float mTimeToAngleTarget;
+	float K;
 	float mRadius = 10.0f;
 
 	KinematicSteering* mpKinematicSteering = nullptr;
 	DynamicSteering* mpDynamicSteering = nullptr;
 
+	KinematicSteering* mpKinematicOrientationSteering = nullptr;
+	DynamicSteering* mpDynamicOrientationSteering = nullptr;
+
 private:
 	Notation mFootprint;
 	const float mFoorPrinttInterval = 0.2f;
 	float mTime = mFoorPrinttInterval;
+	ofColor mColor;
 };

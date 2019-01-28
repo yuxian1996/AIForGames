@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Kinematic.h"
+#include "Group.h"
 
 #include <vector>
 
@@ -9,7 +10,7 @@ class Scene
 {
 
 public:
-	Scene(const std::vector<Boid*>& ipBoids);
+	Scene(const std::vector<Boid*>& ipBoids, Group* ipGroup = nullptr);
 	~Scene();
 	void Update(float inDeltaTime);
 	void Draw();
@@ -17,5 +18,6 @@ public:
 
 private:
 	std::vector<Boid*> mpBoids;
+	Group* mpGroup;
 	std::vector<Kinematic> initalKinematics;
 };

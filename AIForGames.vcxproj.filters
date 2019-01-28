@@ -31,6 +31,21 @@
     <ClCompile Include="src\Steering\WanderSteering.cpp">
       <Filter>src\Steering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Steering\ArriveSteering.cpp">
+      <Filter>src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\ComplexSteering\SeekArrive.cpp">
+      <Filter>src\Steering\ComplexSteering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\AlignSteering.cpp">
+      <Filter>src\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\ComplexSteering\Flocking.cpp">
+      <Filter>src\Steering\ComplexSteering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Steering\SeperationSteering.cpp">
+      <Filter>src\Steering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -41,6 +56,9 @@
     </Filter>
     <Filter Include="src\Notation">
       <UniqueIdentifier>{e60035ae-9553-4814-92d3-9258b0704e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Steering\ComplexSteering">
+      <UniqueIdentifier>{cf7a6243-9fb0-4040-bba1-f339e39d510c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +91,24 @@
     </ClInclude>
     <ClInclude Include="src\Steering\WanderSteering.h">
       <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\ArriveSteering.h">
+      <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\ComplexSteering\SeekArrive.h">
+      <Filter>src\Steering\ComplexSteering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\AlignSteering.h">
+      <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\ComplexSteering\Flocking.h">
+      <Filter>src\Steering\ComplexSteering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\SeperationSteering.h">
+      <Filter>src\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Group.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

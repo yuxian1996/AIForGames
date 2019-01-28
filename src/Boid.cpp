@@ -12,9 +12,15 @@ Boid::~Boid()
 		delete mpDynamicSteering;
 	if (mpKinematicSteering != nullptr)
 		delete mpKinematicSteering;
+	if (mpKinematicOrientationSteering != nullptr)
+		delete mpKinematicOrientationSteering;
+	if (mpDynamicOrientationSteering != nullptr)
+		delete mpDynamicOrientationSteering;
 
 	mpDynamicSteering = nullptr;
 	mpKinematicSteering = nullptr;
+	mpKinematicOrientationSteering = nullptr;
+	mpDynamicOrientationSteering = nullptr;
 }
 
 void Boid::Draw() const
@@ -23,7 +29,7 @@ void Boid::Draw() const
 	mFootprint.Draw();
 
 	// draw circle
-	ofSetColor(255);
+	ofSetColor(mColor);
 	ofDrawCircle(mKinematic.position, mRadius);
 
 	// draw triangle
@@ -44,16 +50,22 @@ void Boid::Update(float inDeltaTime)
 		DynamicSteeringOutput* dynamicOutput = mpDynamicSteering->GetSteeringOutput();
 		mKinematic.Update(*dynamicOutput, inDeltaTime, mMaxSpeed, mMaxRotation);
 
-		// orientation match steering
-		if (glm::length(mKinematic.velocity) >= 0.001f)
-		{
-			mKinematic.orientation = Kinematic::ComputeOrientation(mKinematic.velocity);
-		}
 	}
 	else if (mpKinematicSteering != nullptr)
 	{
 		KinematicSteeringOutput* kinematicOutput = mpKinematicSteering->GetSteeringOutput();
 		mKinematic.Update(*kinematicOutput, inDeltaTime);
+	}
+
+	if (mpDynamicOrientationSteering != nullptr)
+	{
+		auto output = mpDynamicOrientationSteering->GetSteeringOutput();
+		mKinematic.Update(*output, inDeltaTime, mMaxSpeed, mMaxRotation);
+	}
+	else if (mpKinematicOrientationSteering != nullptr)
+	{
+		auto output = mpKinematicOrientationSteering->GetSteeringOutput();
+		mKinematic.Update(*output, inDeltaTime);
 	}
 
 	// update footprint
