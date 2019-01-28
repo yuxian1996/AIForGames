@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#include "Boid.h"
+#include "Scene.h"
 
 class ofApp : public ofBaseApp{
 
@@ -27,8 +27,9 @@ public:
 
 
 private:
-	std::vector<Boid*> mpBoids;
+	std::vector<Scene*> mpScenes;
 	const int WIDTH = 1024;
 	const int HEIGHT = 768;
 	Kinematic mSeekTarget;
+	int mSceneIndex;
 };

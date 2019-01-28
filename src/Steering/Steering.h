@@ -3,49 +3,46 @@
 #include "../SteeringOutput.h"
 
 class Kinematic;
+class Boid;
+class KinematicSteeringOutput;
+class DynamicSteeringOutput;
 
 class Steering
 {
 public:
 	// Constructor
-	Steering(Kinematic* ipKinematic, Kinematic* ipTarget, const float inMaxSpeed, const float inMaxRotation, const float inMaxAcceleration, 
-		const float inRadius)
-		: mpKinematic(ipKinematic), mpTarget(ipTarget), mMaxSpeed(inMaxSpeed), mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration),
-		mRadius(inRadius)
-	{}
+	Steering(Boid* ipBoid) :mpBoid(ipBoid) {}
 	virtual ~Steering() {}
 
 	// Get Steering Output
 	virtual SteeringOutput* GetSteeringOutput() const = 0;
 
 protected:
-	Kinematic* mpKinematic;
-	Kinematic* mpTarget;
-	float mMaxSpeed;
-	float mMaxRotation;
-	float mMaxAcceleration;
-	float mRadius;
+	Boid* mpBoid;
 };
 
 
 class KinematicSteering : public Steering
 {
 public:
-	KinematicSteering(Kinematic* ipKinematic, Kinematic* ipTarget, const float inMaxSpeed, const float inMaxRotation, const float inMaxAcceleration,
-		const float inRadius)
-	: Steering(ipKinematic, ipTarget, inMaxSpeed, inMaxRotation, inMaxAcceleration, inRadius) {}
-	virtual ~KinematicSteering() override {}
+	KinematicSteering(Boid* ipBoid) : Steering(ipBoid) { mpOutput = new KinematicSteeringOutput; }
+	virtual ~KinematicSteering() override { if (mpOutput != nullptr) delete mpOutput; mpOutput = nullptr; }
 
 	virtual KinematicSteeringOutput* GetSteeringOutput() const override = 0;
+	
+protected:
+	KinematicSteeringOutput* mpOutput = nullptr;
 };
 
 class DynamicSteering : public Steering
 {
 public:
-	DynamicSteering(Kinematic* ipKinematic, Kinematic* ipTarget, const float inMaxSpeed, const float inMaxRotation, const float inMaxAcceleration,
-		const float inRadius)
-		: Steering(ipKinematic, ipTarget, inMaxSpeed, inMaxRotation, inMaxAcceleration, inRadius) {}
-	virtual ~DynamicSteering() override {}
+	DynamicSteering(Boid* ipBoid) : Steering(ipBoid) { mpOutput = new DynamicSteeringOutput; }
+	virtual ~DynamicSteering() override { if (mpOutput != nullptr) delete mpOutput; mpOutput = nullptr; }
 
 	virtual DynamicSteeringOutput* GetSteeringOutput() const override = 0;
+
+protected:
+	DynamicSteeringOutput* mpOutput = nullptr;
+
 };

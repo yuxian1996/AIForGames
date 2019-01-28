@@ -185,10 +185,11 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Notation\Notation.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
-    <ClCompile Include="src\SteeringOutput.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\Steering\BasicKinematicSteering.cpp" />
     <ClCompile Include="src\Steering\SeekSteering.cpp" />
     <ClCompile Include="src\Steering\Steering.cpp" />
+    <ClCompile Include="src\Steering\WanderSteering.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Manager.hpp" />
@@ -196,10 +197,11 @@
     <ClInclude Include="src\Kinematic.h" />
     <ClInclude Include="src\Notation\Notation.h" />
     <ClInclude Include="src\ofApp.h" />
-    <ClInclude Include="src\SteeringOutput.h" />
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Steering\BasicKinematicSteering.h" />
     <ClInclude Include="src\Steering\SeekSteering.h" />
     <ClInclude Include="src\Steering\Steering.h" />
+    <ClInclude Include="src\Steering\WanderSteering.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

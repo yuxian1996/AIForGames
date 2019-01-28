@@ -9,18 +9,17 @@ class DynamicSteering;
 class Boid
 {
 public:
-	// Constructor / Desctructor
+	// Constructor 
 	Boid() {}
-	Boid(const Kinematic& inKinematic) : mKinematic(inKinematic) {};
+	Boid(const Kinematic& inKinematic, Kinematic* ipTarget, float inMaxSpeed, float inMaxRotation, float inMaxAcceleration, float inMaxAngular, float inTargetRadius = 0,
+		float inSlowRadius = 0, float inTimeToTarget = 0, float inWanderDistance = 0, float inWanderRadius = 0) : mKinematic(inKinematic), mpTarget(ipTarget), mMaxSpeed(inMaxSpeed),
+		mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration), mMaxAngular(inMaxAngular), mTargetRadius(inTargetRadius), mSlowRadius(inSlowRadius), 
+		mTimeToTarget(inTimeToTarget), mWanderDistance(inWanderDistance), mWanderRadius(inWanderRadius) {};
 	~Boid();
 
 	// Getter & Setter
 	Kinematic* GetKinematic() { return &mKinematic; }
 	void SetKinematic(const Kinematic& inKinematic) { mKinematic = inKinematic; }
-
-	// Add Steering
-	void AddSteering(KinematicSteering* ipSteering) { mpKinematicSteering.push_back(ipSteering); }
-	void AddSteering(DynamicSteering* ipSteering) { mpDynamicSteering.push_back(ipSteering); }
 
 	// Draw
 	void Draw() const;
@@ -28,11 +27,24 @@ public:
 	// Update Boid
 	void Update(float inDeltaTime);
 
-private:
+public:
 	Kinematic mKinematic;
+	Kinematic* mpTarget;
+	float mMaxSpeed;
+	float mMaxRotation;
+	float mMaxAcceleration;
+	float mMaxAngular;
+	float mTargetRadius;
+	float mSlowRadius;
+	float mTimeToTarget;
+	float mWanderDistance;
+	float mWanderRadius;
 	float mRadius = 10.0f;
-	std::vector<KinematicSteering*> mpKinematicSteering;
-	std::vector<DynamicSteering*> mpDynamicSteering;
+
+	KinematicSteering* mpKinematicSteering = nullptr;
+	DynamicSteering* mpDynamicSteering = nullptr;
+
+private:
 	Notation mFootprint;
 	const float mFoorPrinttInterval = 0.2f;
 	float mTime = mFoorPrinttInterval;

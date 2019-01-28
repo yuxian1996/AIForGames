@@ -3,22 +3,18 @@
 #include "Steering/Steering.h"
 #include "SteeringOutput.h"
 
+#include <glm/glm.hpp>
 #include <ofGraphics.h>
 
 Boid::~Boid()
 {
-	// delete every steering behavior
-	for (auto steering : mpKinematicSteering)
-	{
-		delete steering;
-	}
-	for (auto steering : mpDynamicSteering)
-	{
-		delete steering;
-	}
+	if (mpDynamicSteering != nullptr)
+		delete mpDynamicSteering;
+	if (mpKinematicSteering != nullptr)
+		delete mpKinematicSteering;
 
-	mpKinematicSteering.clear();
-	mpDynamicSteering.clear();
+	mpDynamicSteering = nullptr;
+	mpKinematicSteering = nullptr;
 }
 
 void Boid::Draw() const
@@ -40,27 +36,24 @@ void Boid::Draw() const
 }
 
 void Boid::Update(float inDeltaTime)
-{
-	const auto& oldOrientation = mKinematic.orientation;
-	
+{	
+	auto oldOri = mKinematic.orientation;
 	// update dynamic steering only if it has dynamic steering
-	if (mpDynamicSteering.size() != 0)
+	if (mpDynamicSteering != nullptr)
 	{
-		DynamicSteeringOutput* dynamicOutput = mpDynamicSteering[0]->GetSteeringOutput();
-		mKinematic.Update(*dynamicOutput, inDeltaTime);
-		delete dynamicOutput;
+		DynamicSteeringOutput* dynamicOutput = mpDynamicSteering->GetSteeringOutput();
+		mKinematic.Update(*dynamicOutput, inDeltaTime, mMaxSpeed, mMaxRotation);
 
 		// orientation match steering
-		mKinematic.orientation = acos(mKinematic.position.x / mKinematic.position.length());
-		if (mKinematic.position.y < 0)
-			mKinematic.orientation = -mKinematic.orientation;
-
+		if (glm::length(mKinematic.velocity) >= 0.001f)
+		{
+			mKinematic.orientation = Kinematic::ComputeOrientation(mKinematic.velocity);
+		}
 	}
-	else if (mpKinematicSteering.size() != 0)
+	else if (mpKinematicSteering != nullptr)
 	{
-		KinematicSteeringOutput* kinematicOutput = mpKinematicSteering[0]->GetSteeringOutput();
+		KinematicSteeringOutput* kinematicOutput = mpKinematicSteering->GetSteeringOutput();
 		mKinematic.Update(*kinematicOutput, inDeltaTime);
-		delete kinematicOutput;
 	}
 
 	// update footprint

@@ -1,58 +1,71 @@
 #include "SeekSteering.h"
 
+#include "../Boid.h"
 #include "../Kinematic.h"
 #include "glm/glm.hpp"
 
 
 KinematicSteeringOutput * KinematicSeekSteering::GetSteeringOutput() const
 {
-	KinematicSteeringOutput* output = new KinematicSteeringOutput;
-	
+	auto pTarget = mpBoid->mpTarget;
+	Kinematic* pKinematic = &(mpBoid->mKinematic);
+	float maxSpeed = mpBoid->mMaxSpeed;
+
 	// Arrive
-	if (glm::length(mpTarget->position - mpKinematic->position) <= 5)
+	if (glm::length(pTarget->position - pKinematic->position) <= 5)
 	{
-		output->mVelocity = glm::vec2(0,0);
-		output->mRotation = 0;
-		return output;
+		mpOutput->mVelocity = glm::vec2(0,0);
+		mpOutput->mRotation = 0;
+		return mpOutput;
 	}
 
 	// compute velocity
-	glm::vec2 direction = glm::normalize(mpTarget->position - mpKinematic->position);
-	output->mVelocity = direction * mMaxSpeed;
+	glm::vec2 direction = glm::normalize(pTarget->position - pKinematic->position);
+	mpOutput->mVelocity = direction * maxSpeed;
 
 	// compute orientation
-	mpKinematic->orientation = Kinematic::ComputeOrientation(direction);
-	output->mRotation = 0;
+	pKinematic->orientation = Kinematic::ComputeOrientation(direction);
+	mpOutput->mRotation = 0;
 
-	return output;
+	return mpOutput;
 }
 
 DynamicSteeringOutput * DynamicSeekSteering::GetSteeringOutput() const
 {
-	DynamicSteeringOutput* output = new DynamicSteeringOutput;
-	output->mLinear = glm::vec2(0, 0);
-	output->mAngular = 0;
+	auto pTarget = mpBoid->mpTarget;
+	Kinematic* pKinematic = &(mpBoid->mKinematic);
+	float targetRadius = mpBoid->mTargetRadius;
+	float slowRadius = mpBoid->mSlowRadius;
+	float maxSpeed = mpBoid->mMaxSpeed;
+	float maxAcceleration = mpBoid->mMaxAcceleration;
+	float timeToTarget = mpBoid->mTimeToTarget;
+
+	mpOutput->mLinear = glm::vec2(0, 0);
+	mpOutput->mAngular = 0;
 
 	//Arrival
-	float distance = glm::length(mpTarget->position - mpKinematic->position);
-	if (distance < mTargetRadius)
-		return output;
+	float distance = glm::length(pTarget->position - pKinematic->position);
+	if (distance < targetRadius)
+	{
+		pKinematic->velocity = glm::vec2(0, 0);
+		return mpOutput;
+	}
 
 	// Max Speed
-	if (distance > mSlowRadius)
+	if (distance > slowRadius)
 	{
-		glm::vec2 acceleration = glm::normalize(mpTarget->position - mpKinematic->position) * mMaxAcceleration;
-		output->mLinear = acceleration;
-		return output;
+		glm::vec2 acceleration = glm::normalize(pTarget->position - pKinematic->position) * maxAcceleration;
+		mpOutput->mLinear = acceleration;
+		return mpOutput;
 	}
 
 	// Slow down
-	float targetSpeed = mMaxSpeed * distance / mSlowRadius;
-	glm::vec2 targetAcc = (glm::normalize(mpTarget->position - mpKinematic->position) * targetSpeed - mpKinematic->velocity) / mTimeToTarget;
+	float targetSpeed = maxSpeed * distance / slowRadius;
+	glm::vec2 targetAcc = (glm::normalize(pTarget->position - pKinematic->position) * targetSpeed - pKinematic->velocity) / timeToTarget;
 	float accLength = glm::length(targetAcc);
-	if (accLength > mMaxAcceleration)
-		targetAcc = glm::normalize(targetAcc) * mMaxAcceleration;
-	output->mLinear = targetAcc;
+	if (accLength > maxAcceleration)
+		targetAcc = glm::normalize(targetAcc) * maxAcceleration;
+	mpOutput->mLinear = targetAcc;
 
-	return output;
+	return mpOutput;
 }

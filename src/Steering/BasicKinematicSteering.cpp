@@ -1,5 +1,6 @@
 #include "BasicKinematicSteering.h"
 
+#include "../Boid.h"
 #include "../SteeringOutput.h"
 #include "../Kinematic.h"
 
@@ -9,35 +10,39 @@
 
 KinematicSteeringOutput * BasicKinematicSteering::GetSteeringOutput() const
 {
-	KinematicSteeringOutput* kinematicOutput = new KinematicSteeringOutput;
-	float height = ofGetWindowHeight() - mRadius;
-	float width = ofGetWindowWidth() - mRadius;
+	auto pTarget = mpBoid->mpTarget;
+	Kinematic* pKinematic = &(mpBoid->mKinematic);
+	float maxSpeed = mpBoid->mMaxSpeed;
+	float radius = mpBoid->mRadius;
 
-	kinematicOutput->mVelocity = mpKinematic->velocity;
-	kinematicOutput->mRotation = 0;
+	float height = ofGetWindowHeight() - radius;
+	float width = ofGetWindowWidth() - radius;
 
-	glm::vec2 nextPosition = mpKinematic->position + (float)ofGetLastFrameTime() * mpKinematic->velocity;
+	mpOutput->mVelocity = pKinematic->velocity;
+	mpOutput->mRotation = 0;
+
+	glm::vec2 nextPosition = pKinematic->position + (float)ofGetLastFrameTime() * pKinematic->velocity;
 
 	if (nextPosition.x > width)
 	{
-		kinematicOutput->mVelocity = glm::vec2(0, -mMaxSpeed);
-		mpKinematic->orientation = -PI / 2;
+		mpOutput->mVelocity = glm::vec2(0, -maxSpeed);
+		pKinematic->orientation = -PI / 2;
 	}
-	if (nextPosition.x < mRadius)
+	if (nextPosition.x < radius)
 	{
-		kinematicOutput->mVelocity = glm::vec2(0, mMaxSpeed);
-		mpKinematic->orientation = PI / 2;
+		mpOutput->mVelocity = glm::vec2(0, maxSpeed);
+		pKinematic->orientation = PI / 2;
 	}
 	if (nextPosition.y > height)
 	{
-		kinematicOutput->mVelocity = glm::vec2(mMaxSpeed, 0);
-		mpKinematic->orientation = 0;
+		mpOutput->mVelocity = glm::vec2(maxSpeed, 0);
+		pKinematic->orientation = 0;
 	}
-	if (nextPosition.y < mRadius)
+	if (nextPosition.y < radius)
 	{
-		kinematicOutput->mVelocity = glm::vec2(-mMaxSpeed, 0);
-		mpKinematic->orientation = PI;
+		mpOutput->mVelocity = glm::vec2(-maxSpeed, 0);
+		pKinematic->orientation = PI;
 	}
 
-	return kinematicOutput;
+	return mpOutput;
 }

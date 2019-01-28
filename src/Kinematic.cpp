@@ -3,10 +3,12 @@
 #include "SteeringOutput.h"
 #include "glm/glm.hpp"
 
-void Kinematic::Update(const DynamicSteeringOutput& inSteering, const float inDeltaTimeg)
+void Kinematic::Update(const DynamicSteeringOutput & inSteering, const float inDeltaTime, float inMaxSpeed, float inMaxRotation)
 {
-	velocity += inSteering.mLinear * inDeltaTimeg;
-	position += velocity * inDeltaTimeg;
+	velocity += inSteering.mLinear * inDeltaTime;
+	if (glm::length(velocity) >= inMaxSpeed)
+		velocity = glm::normalize(velocity) * inMaxSpeed;
+	position += velocity * inDeltaTime;
 	orientation = ComputeOrientation(position);
 	rotation = 0;
 }
@@ -19,13 +21,16 @@ void Kinematic::Update(const KinematicSteeringOutput& inSteering, const float in
 	orientation += rotation * inDeltaTime;
 }
 
-float Kinematic::ComputeOrientation(const glm::vec2 & inPosition) 
+float Kinematic::ComputeOrientation(const glm::vec2 & inVector) 
 {
-	float length = inPosition.length();
+	float length = inVector.length();
 	assert(length != 0);
-	float orientation = acos(glm::normalize(inPosition).x);
-	if (inPosition.y < 0)
-		orientation = -orientation;
+	float orientation = atan2(inVector.y, inVector.x);
 
 	return orientation;
+}
+
+glm::vec2 Kinematic::ComputeDirection(const float inOrientation)
+{
+	return glm::vec2(cos(inOrientation), sin(inOrientation));
 }
