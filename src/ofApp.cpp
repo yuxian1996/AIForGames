@@ -42,7 +42,7 @@ void ofApp::setup(){
 
 	// setup seek and dynamic arrive
 	Kinematic dynamicSeekKinematic(glm::vec2(10, 10), 0, glm::vec2(0, 0), 0);
-	Boid* dynamicSeekBoid = new Boid(dynamicSeekKinematic, &mSeekTarget, 100, 0, 300, 0, 10, 100, 0.01f);
+	Boid* dynamicSeekBoid = new Boid(dynamicSeekKinematic, &mSeekTarget, 100, 0, 300, 0, 10, 70, 0.1f);
 	SeekDynamicArrive* dynamicSeekSteering = new SeekDynamicArrive(dynamicSeekBoid);
 	dynamicSeekBoid->mpDynamicSteering = dynamicSeekSteering;
 	alignSteering = new KinematicAlignSteering(dynamicSeekBoid);
@@ -54,7 +54,7 @@ void ofApp::setup(){
 
 	// setup kinematic wander
 	Kinematic kinematicWanderKinematic(glm::vec2(300, 300), 0, glm::vec2(100, 0), 0);
-	Boid* kinematicWanderBoid = new Boid(kinematicWanderKinematic, nullptr, 100, PI * 5, 100, 0, 0, 0, 0);
+	Boid* kinematicWanderBoid = new Boid(kinematicWanderKinematic, nullptr, 100, PI * 2, 100, 0, 0, 0, 0);
 	KinematicWanderSteering* kinematicWanderSteering = new KinematicWanderSteering(kinematicWanderBoid);
 	kinematicWanderBoid->mpKinematicSteering = kinematicWanderSteering;
 	//alignSteering = new KinematicAlignSteering(kinematicWanderBoid);
@@ -66,11 +66,11 @@ void ofApp::setup(){
 
 	// setup dynamic wander
 	Kinematic dynamicWanderKinematic(glm::vec2(300, 300), 0, glm::vec2(100, 0), 0);
-	Boid* dynamicWanderBoid = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 5, 300, 0, 10, 70, 0.1f, 50, 100);
+	Boid* dynamicWanderBoid = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 3, 1000, 20, 5, 10, 0.1f, 50, 40, 1, 0.01, 1.0f);
 	DynamicWanderSteering* dynamicWanderSteering = new DynamicWanderSteering(dynamicWanderBoid);
 	dynamicWanderBoid->mpDynamicSteering = dynamicWanderSteering;
-	alignSteering = new KinematicAlignSteering(dynamicWanderBoid);
-	dynamicWanderBoid->mpKinematicOrientationSteering = alignSteering;
+	DynamicAlignSteering* dynamicAlign = new DynamicAlignSteering(dynamicWanderBoid);
+	dynamicWanderBoid->mpDynamicOrientationSteering = dynamicAlign;
 	std::vector<Boid*> boids5({ dynamicWanderBoid });
 
 	scene = new Scene(boids5);

@@ -48,25 +48,27 @@ void Boid::Update(float inDeltaTime)
 	if (mpDynamicSteering != nullptr)
 	{
 		DynamicSteeringOutput* dynamicOutput = mpDynamicSteering->GetSteeringOutput();
-		mKinematic.Update(*dynamicOutput, inDeltaTime, mMaxSpeed, mMaxRotation);
+		mKinematic.UpdateVelocityRotation(*dynamicOutput, inDeltaTime, mMaxSpeed, mMaxRotation);
 
 	}
 	else if (mpKinematicSteering != nullptr)
 	{
 		KinematicSteeringOutput* kinematicOutput = mpKinematicSteering->GetSteeringOutput();
-		mKinematic.Update(*kinematicOutput, inDeltaTime);
+		mKinematic.UpdateVelocityRotation(*kinematicOutput, inDeltaTime);
 	}
 
 	if (mpDynamicOrientationSteering != nullptr)
 	{
 		auto output = mpDynamicOrientationSteering->GetSteeringOutput();
-		mKinematic.Update(*output, inDeltaTime, mMaxSpeed, mMaxRotation);
+		mKinematic.UpdateVelocityRotation(*output, inDeltaTime, mMaxSpeed, mMaxRotation);
 	}
 	else if (mpKinematicOrientationSteering != nullptr)
 	{
 		auto output = mpKinematicOrientationSteering->GetSteeringOutput();
-		mKinematic.Update(*output, inDeltaTime);
+		mKinematic.UpdateVelocityRotation(*output, inDeltaTime);
 	}
+
+	mKinematic.Update(inDeltaTime);
 
 	// update footprint
 	mTime -= inDeltaTime;

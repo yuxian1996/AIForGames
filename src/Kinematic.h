@@ -19,11 +19,14 @@ struct Kinematic
 		: position(inPosition), orientation(inOrientation), velocity(inVelocity), rotation(inRotation)
 	{}
 
-	void Update(const DynamicSteeringOutput& inSteering, const float inDeltaTime, float inMaxSpeed = std::numeric_limits<float>::max(), 
+	void UpdateVelocityRotation(const DynamicSteeringOutput& inSteering, const float inDeltaTime, float inMaxSpeed = std::numeric_limits<float>::max(), 
 		float inMaxRotation = std::numeric_limits<float>::max());
-	void Update(const KinematicSteeringOutput& inSteering, const float inDeltaTime);
+	void UpdateVelocityRotation(const KinematicSteeringOutput& inSteering, const float inDeltaTime);
+
+	void Update(const float inDeltaTime);
 
 	static float ComputeOrientation(const glm::vec2& inVector);
 	static glm::vec2 ComputeDirection(const float inOrientation);
+	static float GetMappedOrientation(const float inOrientation);
 };
 
