@@ -44,29 +44,27 @@ DynamicSteeringOutput * DynamicWanderSteering::GetSteeringOutput() const
 	float distance = mpBoid->mWanderDistance;
 	float radius = mpBoid->mWanderRadius;
 
-
 	// boundary detect
 	float width = ofGetWidth();
 	float height = ofGetHeight();
 
+	glm::vec2 nextPosition = pKinematic->position + pKinematic->velocity * (float)ofGetLastFrameTime();
+	float bias = 10;
+	bool bIsOut = false;
+
 	// boundary test
-	if (pKinematic->position.x <= radius || pKinematic->position.x >= width - radius)
+	if (pKinematic->position.x <= bias || pKinematic->position.x >= width - bias)
 	{
-		pKinematic->velocity.x = -pKinematic->velocity.x;
-		pKinematic->orientation += PI;
-		pKinematic->rotation = 0;
+		pKinematic->position.x = width - pKinematic->position.x;
 	}
-	if (pKinematic->position.y <= radius || pKinematic->position.y >= height - radius)
+	if (pKinematic->position.y <= bias || pKinematic->position.y >= height - bias)
 	{
-		pKinematic->velocity.y = -pKinematic->velocity.y;
-		pKinematic->orientation += PI;
-		pKinematic->rotation = 0;
+		pKinematic->position.y = height - pKinematic->position.y;
 	}
 
 	glm::vec2 center = pKinematic->position + distance * pKinematic->ComputeDirection(pKinematic->orientation);
 
 	float random = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * PI * 2;
-	//float random = (static_cast<float>(rand()) / RAND_MAX - static_cast<float>(rand()) / RAND_MAX) * PI;
 
 	glm::vec2 direction = Kinematic::ComputeDirection(pKinematic->orientation + random);
 	target.position = center + radius * direction;

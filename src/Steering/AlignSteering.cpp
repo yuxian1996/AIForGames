@@ -54,8 +54,8 @@ DynamicSteeringOutput * DynamicAlignSteering::GetSteeringOutput() const
 	}
 
 	// Slow down
-	float targetRotation = maxRotation * radiance / slowRadiance;
-	float targetAcc = (targetRotation - Kinematic::GetMappedOrientation(pKinematic->orientation)) / timeToTarget;
+	float targetRotation = maxRotation * radianceSize / slowRadiance;
+	float targetAcc = (direction * targetRotation - Kinematic::GetMappedOrientation(pKinematic->orientation)) / timeToTarget;
 	if (abs(targetAcc) > maxAngularAcc)
 		targetAcc = direction * maxAngularAcc;
 	mpOutput->mAngular = targetAcc;

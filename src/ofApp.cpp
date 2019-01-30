@@ -66,7 +66,7 @@ void ofApp::setup(){
 
 	// setup dynamic wander
 	Kinematic dynamicWanderKinematic(glm::vec2(300, 300), 0, glm::vec2(100, 0), 0);
-	Boid* dynamicWanderBoid = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 3, 1000, 20, 5, 10, 0.1f, 50, 40, 1, 0.01, 1.0f);
+	Boid* dynamicWanderBoid = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 3, 1000, 20, 5, 10, 0.1f, 50, 40, 1, 0, 0.1);
 	DynamicWanderSteering* dynamicWanderSteering = new DynamicWanderSteering(dynamicWanderBoid);
 	dynamicWanderBoid->mpDynamicSteering = dynamicWanderSteering;
 	DynamicAlignSteering* dynamicAlign = new DynamicAlignSteering(dynamicWanderBoid);
