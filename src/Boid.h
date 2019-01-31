@@ -14,7 +14,7 @@ public:
 	Boid() {}
 	Boid(const Kinematic& inKinematic, Kinematic* ipTarget, float inMaxSpeed, float inMaxRotation, float inMaxAcceleration, float inMaxAngular,
 		float inTargetRadius = 0, float inSlowRadius = 0, float inTimeToTarget = 0, float inWanderDistance = 0, float inWanderRadius = 0,
-		float inSlowAngleThreshold = 0, float inTargetAngleThreshold = 0, float inTimeToAngleTarget = 0, float k = 10000) : mKinematic(inKinematic), mpTarget(ipTarget),
+		float inSlowAngleThreshold = 0, float inTargetAngleThreshold = 0, float inTimeToAngleTarget = 0, float k = 15000) : mKinematic(inKinematic), mpTarget(ipTarget),
 		mMaxSpeed(inMaxSpeed), mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration), mMaxAngularAcc(inMaxAngular), mTargetRadius(inTargetRadius), 
 		mSlowRadius(inSlowRadius), mTimeToTarget(inTimeToTarget), mWanderDistance(inWanderDistance), mWanderRadius(inWanderRadius),
 		mSlowAngleThreshold(inSlowAngleThreshold), mTargetAngleThreshold(inTargetAngleThreshold), mTimeToAngleTarget(inTimeToAngleTarget), K(k),

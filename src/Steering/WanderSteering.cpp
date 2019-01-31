@@ -39,7 +39,7 @@ KinematicSteeringOutput * KinematicWanderSteering::GetSteeringOutput() const
 
 DynamicSteeringOutput * DynamicWanderSteering::GetSteeringOutput() const
 {
-	Kinematic target;
+	mpBoid->mpTarget = &mWanderTarget;
 	Kinematic* pKinematic = mpBoid->GetKinematic();
 	float distance = mpBoid->mWanderDistance;
 	float radius = mpBoid->mWanderRadius;
@@ -67,9 +67,8 @@ DynamicSteeringOutput * DynamicWanderSteering::GetSteeringOutput() const
 	float random = (static_cast<float>(rand()) / RAND_MAX - 0.5f) * PI * 2;
 
 	glm::vec2 direction = Kinematic::ComputeDirection(pKinematic->orientation + random);
-	target.position = center + radius * direction;
+	mWanderTarget.position = center + radius * direction;
 
-	mpBoid->mpTarget = &target;
 
 	return mDelegateSeekSteering.GetSteeringOutput();
 }

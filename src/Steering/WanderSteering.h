@@ -2,6 +2,7 @@
 
 #include "Steering.h"
 #include "SeekSteering.h"
+#include "../Kinematic.h"
 
 class KinematicWanderSteering : public KinematicSteering
 {
@@ -20,6 +21,9 @@ public:
 
 	virtual DynamicSteeringOutput* GetSteeringOutput() const override;
 
+	void SetWanderTarget(const Kinematic& inWanderTarget) { mWanderTarget = inWanderTarget; }
+
 private:
+	mutable Kinematic mWanderTarget;
 	DynamicSeekSteering mDelegateSeekSteering;
 };

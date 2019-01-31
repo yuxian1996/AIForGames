@@ -22,7 +22,7 @@ KinematicSteeringOutput * KinematicAlignSteering::GetSteeringOutput() const
 DynamicSteeringOutput * DynamicAlignSteering::GetSteeringOutput() const
 {
 
-	auto pTarget = mpBoid->mpTarget;
+	//auto pTarget = mpBoid->mpTarget;
 	Kinematic* pKinematic = mpBoid->GetKinematic();
 	float targetRadiance = mpBoid->mTargetAngleThreshold;
 	float slowRadiance = mpBoid->mSlowAngleThreshold;
@@ -30,7 +30,8 @@ DynamicSteeringOutput * DynamicAlignSteering::GetSteeringOutput() const
 	float maxAngularAcc = mpBoid->mMaxAngularAcc;
 	float timeToTarget = mpBoid->mTimeToAngleTarget;
 
-	float radiance = Kinematic::ComputeOrientation(pKinematic->velocity) - pKinematic->orientation;
+	//float radiance = Kinematic::ComputeOrientation(pKinematic->velocity) - pKinematic->orientation;
+	float radiance = mTargetOrientation - pKinematic->orientation;
 	// map to [-PI, PI]
 	radiance = Kinematic::GetMappedOrientation(radiance);
 	float radianceSize = abs(radiance);
@@ -62,4 +63,18 @@ DynamicSteeringOutput * DynamicAlignSteering::GetSteeringOutput() const
 	mpOutput->mLinear = glm::vec2(0, 0);
 
 	return mpOutput;
+}
+
+DynamicSteeringOutput * FaceToWhereYouGo::GetSteeringOutput() const
+{
+	mAlign.SetTargetOrientation(Kinematic::ComputeOrientation(mpBoid->mKinematic.velocity));
+
+	return mAlign.GetSteeringOutput();
+}
+
+DynamicSteeringOutput * FaceTarget::GetSteeringOutput() const
+{
+	mAlign.SetTargetOrientation(Kinematic::ComputeOrientation(mpBoid->mpTarget->position - mpBoid->mKinematic.position));
+
+	return mAlign.GetSteeringOutput();
 }

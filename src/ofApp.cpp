@@ -64,21 +64,34 @@ void ofApp::setup(){
 	scene = new Scene(boids4);
 	mpScenes.push_back(scene);
 
-	// setup dynamic wander
+	// setup dynamic wander - face to where you to
 	Kinematic dynamicWanderKinematic(glm::vec2(300, 300), 0, glm::vec2(100, 0), 0);
-	Boid* dynamicWanderBoid = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 3, 1000, 20, 5, 10, 0.1f, 50, 40, 1, 0, 0.1);
-	DynamicWanderSteering* dynamicWanderSteering = new DynamicWanderSteering(dynamicWanderBoid);
-	dynamicWanderBoid->mpDynamicSteering = dynamicWanderSteering;
-	DynamicAlignSteering* dynamicAlign = new DynamicAlignSteering(dynamicWanderBoid);
-	dynamicWanderBoid->mpDynamicOrientationSteering = dynamicAlign;
-	std::vector<Boid*> boids5({ dynamicWanderBoid });
+	Boid* dynamicWanderBoid1 = new Boid(dynamicWanderKinematic, nullptr, 100, PI * 3, 1000, 20, 5, 10, 0.1f, 50, 40, 1, 0, 0.1);
+	DynamicWanderSteering* dynamicWanderSteering1 = new DynamicWanderSteering(dynamicWanderBoid1);
+	dynamicWanderBoid1->mpDynamicSteering = dynamicWanderSteering1;
+	FaceToWhereYouGo* faceWhereYouGo = new FaceToWhereYouGo(dynamicWanderBoid1);
+	dynamicWanderBoid1->mpDynamicOrientationSteering = faceWhereYouGo;
+	std::vector<Boid*> boids5({ dynamicWanderBoid1 });
 
 	scene = new Scene(boids5);
 	mpScenes.push_back(scene);
 
+	// setup dynamic wander - face to target
+	Kinematic dynamicWanderKinematic2(glm::vec2(300, 300), 0, glm::vec2(100, 0), 0);
+	Boid* dynamicWanderBoid2 = new Boid(dynamicWanderKinematic2, nullptr, 100, PI * 2, 1000, 10, 5, 10, 0.1f, 50, 40, 1, 0.05, 0.1);
+	DynamicWanderSteering* dynamicWanderSteering2 = new DynamicWanderSteering(dynamicWanderBoid2);
+	dynamicWanderBoid2->mpDynamicSteering = dynamicWanderSteering2;
+	FaceTarget* faceTarget = new FaceTarget(dynamicWanderBoid2);
+	dynamicWanderBoid2->mpDynamicOrientationSteering = faceTarget;
+	std::vector<Boid*> boids6({ dynamicWanderBoid2 });
+
+	scene = new Scene(boids6);
+	mpScenes.push_back(scene);
+
+
 	// setup flocking
 	Group* pGroup = new Group;
-	std::vector<Boid*> boids6;
+	std::vector<Boid*> boids7;
 
 	// wander leader
 	Kinematic leaderKinematic(glm::vec2(10, 10), 0, glm::vec2(0, 0), 0);
@@ -89,30 +102,30 @@ void ofApp::setup(){
 	//leaderBoid->mpKinematicOrientationSteering = alignSteering;
 	leaderBoid->SetColor(ofColor(200, 0, 0));
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < 3; j++)
 		{
 			Kinematic flockingKinematic(glm::vec2(i * 20, j * 20), 0, glm::vec2(0, 0), 0);
-			Boid* flockingBoid = new Boid(flockingKinematic, nullptr, 80, 100, 100, 100, 20, 70, 0.1f);
-			FlockingSteering* flockingSteering = new FlockingSteering(flockingBoid, 0.8f, 0.6f, 0.5f);
+			Boid* flockingBoid = new Boid(flockingKinematic, nullptr, 100, PI * 5, 100, 20, 10, 50, 0.01f);
+			FlockingSteering* flockingSteering = new FlockingSteering(flockingBoid, 1.2f, 0.6f, 0.5f);
 			flockingBoid->mpDynamicSteering = flockingSteering;
 			alignSteering = new KinematicAlignSteering(flockingBoid);
 			flockingBoid->mpKinematicOrientationSteering = alignSteering;
 			flockingBoid->SetLeader(leaderBoid);
-			boids6.push_back(flockingBoid);
+			boids7.push_back(flockingBoid);
 		}
 	}
 
-	pGroup->mpBoids = boids6;
+	pGroup->mpBoids = boids7;
 	for (auto pBoid : pGroup->mpBoids)
 	{
 		pBoid->SetGroup(pGroup);
 	}
 	
-	boids6.push_back(leaderBoid);
+	boids7.push_back(leaderBoid);
 
-	scene = new Scene(boids6, pGroup);
+	scene = new Scene(boids7, pGroup);
 	mpScenes.push_back(scene);
 
 }
