@@ -10,8 +10,62 @@
 #include "Steering/ComplexSteering/Flocking.h"
 #include "Scene.h"
 
-#include <graphics/ofGraphics.h>
+#include "Graph/Graph.h"
+#include "Graph/NodeRecord.h"
 
+#include <graphics/ofGraphics.h>
+#include <functional>
+#include <queue>
+#include <unordered_map>
+
+namespace
+{
+	Graph* sGraph = nullptr;
+	// setup graph for assignment 2
+	void SetupGraph()
+	{
+		std::vector<Node> nodes = {
+			{0,0}, {1,1}
+		};
+
+		std::vector<Edge> edges = {
+			{0, 1, 100}
+		};
+
+		sGraph = new Graph(nodes, edges);
+	}
+
+	void ReleaseGraph()
+	{
+		delete sGraph;
+	}
+
+	bool FindPath(int inSource, int inDest, std::function<float(int,int)> inFunction)
+	{
+		if (inSource == inDest)
+			return true;
+
+		std::unordered_map<int, NodeRecord> records;
+
+		auto compare = [&records]( int a,  int b) {
+			return records[a].GetEstimatedTotal() < records[b].GetEstimatedTotal();
+		};
+
+		std::priority_queue<int, std::vector<int>, decltype(compare)> queue(compare);
+
+
+	/*	while (currentNode != inSource)
+		{
+
+		}
+		
+		if (currentNode == inSource)
+		{
+
+		}*/
+	}
+
+}
 
 //--------------------------------------------------------------
 void ofApp::setup(){

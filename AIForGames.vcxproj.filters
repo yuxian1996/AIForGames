@@ -60,6 +60,9 @@
     <Filter Include="src\Steering\ComplexSteering">
       <UniqueIdentifier>{cf7a6243-9fb0-4040-bba1-f339e39d510c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graph">
+      <UniqueIdentifier>{1dfb4489-b997-47d5-9a22-e87589948bf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -109,6 +112,18 @@
     </ClInclude>
     <ClInclude Include="src\Group.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graph\Graph.h">
+      <Filter>src\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graph\Edge.h">
+      <Filter>src\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graph\NodeRecord.h">
+      <Filter>src\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graph\Node.h">
+      <Filter>src\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

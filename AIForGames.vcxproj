@@ -199,6 +199,10 @@
   <ItemGroup>
     <ClInclude Include="Manager.hpp" />
     <ClInclude Include="src\Boid.h" />
+    <ClInclude Include="src\Graph\Edge.h" />
+    <ClInclude Include="src\Graph\Graph.h" />
+    <ClInclude Include="src\Graph\Node.h" />
+    <ClInclude Include="src\Graph\NodeRecord.h" />
     <ClInclude Include="src\Group.h" />
     <ClInclude Include="src\Kinematic.h" />
     <ClInclude Include="src\Notation\Notation.h" />
