@@ -46,6 +46,9 @@
     <ClCompile Include="src\Steering\SeperationSteering.cpp">
       <Filter>src\Steering</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graph\Graph.cpp">
+      <Filter>src\Graph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

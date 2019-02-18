@@ -8,7 +8,7 @@ public:
 	NodeRecord(int inNode, Edge inIncomingEdge, float inCostSoFar, float inEstimatedTotal) :
 		mNode(inNode), mIncomingEdge(inIncomingEdge), mCostSoFar(inCostSoFar), mEstimatedTotal(inEstimatedTotal)
 	{}
-
+	NodeRecord() = default;
 	Edge GetInComingEdge() const { return mIncomingEdge; }
 	float GetCostSoFar() const { return mCostSoFar; }
 	float GetEstimatedTotal() const { return mEstimatedTotal; }

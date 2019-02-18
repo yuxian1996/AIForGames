@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Boid.cpp" />
+    <ClCompile Include="src\Graph\Graph.cpp" />
     <ClCompile Include="src\Kinematic.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Notation\Notation.cpp" />
