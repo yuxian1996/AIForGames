@@ -182,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="src\Boid.cpp" />
     <ClCompile Include="src\Graph\Graph.cpp" />
+    <ClCompile Include="src\Graph\Grid.cpp" />
     <ClCompile Include="src\Kinematic.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Notation\Notation.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\Boid.h" />
     <ClInclude Include="src\Graph\Edge.h" />
     <ClInclude Include="src\Graph\Graph.h" />
+    <ClInclude Include="src\Graph\Grid.h" />
     <ClInclude Include="src\Graph\Node.h" />
     <ClInclude Include="src\Graph\NodeRecord.h" />
     <ClInclude Include="src\Group.h" />

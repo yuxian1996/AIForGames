@@ -49,6 +49,9 @@
     <ClCompile Include="src\Graph\Graph.cpp">
       <Filter>src\Graph</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graph\Grid.cpp">
+      <Filter>src\Graph</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -126,6 +129,9 @@
       <Filter>src\Graph</Filter>
     </ClInclude>
     <ClInclude Include="src\Graph\Node.h">
+      <Filter>src\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graph\Grid.h">
       <Filter>src\Graph</Filter>
     </ClInclude>
   </ItemGroup>
