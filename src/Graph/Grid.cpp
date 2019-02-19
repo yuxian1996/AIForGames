@@ -3,9 +3,15 @@
 #include "Node.h"
 #include "NodeRecord.h"
 
+#include "ofPixels.h"
+#include "ofGraphics.h"
+
 #include <iostream>
 #include <unordered_set>
 #include <algorithm>
+#include <fstream>
+
+const float Grid::MaxCost = 255.0f;
 
 Grid::Grid(float ** ipMap, int inWidth, int inHeight) : mWidth(inWidth), mHeight(inHeight)
 {
@@ -31,6 +37,32 @@ Grid::Grid(int inWidth, int inHeight) : mWidth(inWidth), mHeight(inHeight)
 			mMap[i][j] = 1;		// default cost is 1
 		}
 	}
+}
+
+Grid::Grid(const char * const inPath)
+{
+	mImage.loadImage(inPath);
+	mWidth = mImage.getWidth();
+	mHeight = mImage.getHeight();
+
+	mMap = new float*[mHeight];
+	for (int i = 0; i < mHeight; i++)
+	{
+		mMap[i] = new float[mWidth];
+		for (int j = 0; j < mWidth; j++)
+		{
+			if (mImage.getColor(i, j).getBrightness() <= 128)
+				mMap[i][j] = 256;
+			else
+				mMap[i][j] = 1;		// default cost is 1
+		}
+	}
+}
+
+Grid * Grid::LoadFromImage(const char * const inPath)
+{
+	Grid* grid = new Grid(inPath);
+	return grid;
 }
 
 void Grid::SetCost(int x, int y, float cost)
@@ -78,12 +110,20 @@ int Grid::GetNext(int inSource, Direction inDirection)
 	switch (inDirection)
 	{
 	case Direction::Up:
+		if (inSource / mWidth == 0)
+			return -1;
 		return inSource - mWidth;
 	case Direction::Down:
+		if (inSource / mWidth == mHeight - 1)
+			return -1;
 		return inSource + mWidth;
 	case Direction::Left:
+		if (inSource % mWidth == 0)
+			return -1;
 		return inSource - 1;
 	case Direction::Right:
+		if (inSource % mWidth == mWidth - 1)
+			return -1;
 		return inSource + 1;
 	default:
 		return inSource;
@@ -95,12 +135,20 @@ int Grid::GetLast(int inDest, Direction inDirection)
 	switch (inDirection)
 	{
 	case Direction::Up:
+		if (inDest / mWidth == mHeight - 1)
+			return -1;
 		return inDest + mWidth;
 	case Direction::Down:
+		if (inDest / mWidth == 0)
+			return -1;
 		return inDest - mWidth;
 	case Direction::Left:
+		if (inDest % mWidth == mWidth - 1)
+			return -1;
 		return inDest + 1;
 	case Direction::Right:
+		if (inDest % mWidth == 0)
+			return -1;
 		return inDest - 1;
 	default:
 		return inDest;
@@ -135,7 +183,7 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 		for (int i = 0; i < (int)Direction::Count; i++)
 		{
 			int next = GetNext(currentNode, (Direction)i);
-			if (closeList.find(next) != closeList.end())
+			if (next < 0 || closeList.find(next) != closeList.end() || GetCost(next) > MaxCost)
 				continue;
 
 			float h = inFunction(next, inDest);
@@ -191,6 +239,11 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 		std::cout << std::endl;
 		return true;
 	}
+}
+
+void Grid::Draw()
+{
+	mImage.draw(0, 0);
 }
 
 

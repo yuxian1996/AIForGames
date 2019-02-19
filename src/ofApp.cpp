@@ -12,6 +12,7 @@
 
 #include "Graph/Graph.h"
 #include "Graph/NodeRecord.h"
+#include "Graph/Grid.h"
 
 #include <graphics/ofGraphics.h>
 #include <functional>
@@ -26,6 +27,7 @@
 namespace
 {
 	Graph* sGraph = nullptr;
+	Grid* sGrid = nullptr;
 
 	void ReleaseGraph()
 	{
@@ -68,7 +70,7 @@ void ofApp::setup(){
 	{
 		srand(time(nullptr));
 
-		goto SecondGraph;
+		goto CustomGrid;
 		// Test first graph
 		{
 			sGraph = Graph::Load("data/map.txt");
@@ -225,9 +227,17 @@ void ofApp::setup(){
 		}
 	
 
+	CustomGrid:
 		// Setup grid
 		// Load a grey image, convert it into grid
+		{
+			sGrid = Grid::LoadFromImage("download.png");
 
+			sGrid->FindPath(0, 10984, GetZero);
+
+			//delete sGrid;
+			//sGrid = nullptr;
+		}
 	}
 
 	/* First Assignment
@@ -363,6 +373,8 @@ void ofApp::draw(){
 	if (mSceneIndex >= 0 && mSceneIndex < mpScenes.size())
 		mpScenes[mSceneIndex]->Draw();
 
+	if (sGrid != nullptr)
+		sGrid->Draw();
 }
 
 void ofApp::exit()
@@ -373,6 +385,11 @@ void ofApp::exit()
 	}
 
 	mpScenes.clear();
+
+	if (sGrid != nullptr)
+		delete sGrid;
+	if (sGraph != nullptr)
+		delete sGraph;
 }
 
 //--------------------------------------------------------------
