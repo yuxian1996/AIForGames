@@ -32,4 +32,7 @@ private:
 	const int HEIGHT = 768;
 	Kinematic mSeekTarget;
 	int mSceneIndex;
+	int mStartIndex = 0;
+	int mEndIndex = 0;
+	bool bIsFirst = true;
 };

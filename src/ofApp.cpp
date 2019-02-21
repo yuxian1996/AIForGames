@@ -40,6 +40,11 @@ namespace
 		return abs(sGraph->GetNode(a).x - sGraph->GetNode(b).x) + abs(sGraph->GetNode(a).y - sGraph->GetNode(b).y);
 	}
 
+	float GetManhattanDistance_Grid(int a, int b)
+	{
+		return abs(a % sGrid->GetGridWidth() - b % sGrid->GetGridWidth()) + abs(a / sGrid->GetGridWidth() - b / sGrid->GetGridWidth());
+	}
+
 	float GetEuclideanDistance(int a, int b)
 	{
 		return sqrtf(pow(sGraph->GetNode(a).x - sGraph->GetNode(b).x, 2) + pow(sGraph->GetNode(a).y - sGraph->GetNode(b).y, 2));
@@ -233,7 +238,7 @@ void ofApp::setup(){
 		{
 			sGrid = Grid::LoadFromImage("download.png");
 
-			sGrid->FindPath(0, 10984, GetZero);
+			//sGrid->FindPath(0, 10984, GetZero);
 
 			//delete sGrid;
 			//sGrid = nullptr;
@@ -374,7 +379,10 @@ void ofApp::draw(){
 		mpScenes[mSceneIndex]->Draw();
 
 	if (sGrid != nullptr)
+	{
 		sGrid->Draw();
+		sGrid->DrawPath();
+	}
 }
 
 void ofApp::exit()
@@ -424,7 +432,20 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
+	
+	if (x > sGrid->GetWidth() || y > sGrid->GetHeight())
+		return;
 
+	if (bIsFirst)
+	{
+		mStartIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
+	}
+	else
+	{
+		mEndIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
+		sGrid->FindPath(mStartIndex, mEndIndex , GetManhattanDistance_Grid);
+	}
+	bIsFirst = !bIsFirst;
 }
 
 //--------------------------------------------------------------

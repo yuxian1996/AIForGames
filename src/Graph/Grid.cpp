@@ -39,29 +39,48 @@ Grid::Grid(int inWidth, int inHeight) : mWidth(inWidth), mHeight(inHeight)
 	}
 }
 
-Grid::Grid(const char * const inPath)
+Grid::Grid(const char * const inPath, int inGridSize, int inImageWidth, int inImageHeight)
+	: mGridSize(inGridSize)
 {
 	mImage.loadImage(inPath);
+	if (inImageWidth > 0 && inImageHeight > 0)
+	{
+		mImage.resize(inImageWidth + inImageWidth % mGridSize, inImageHeight + inImageHeight % mGridSize);
+	}
 	mWidth = mImage.getWidth();
 	mHeight = mImage.getHeight();
 
-	mMap = new float*[mHeight];
-	for (int i = 0; i < mHeight; i++)
+	mGridWidth = mWidth / mGridSize;
+	mGridHeight = mHeight / mGridSize;
+	mMap = new float*[mGridHeight];
+	for (int i = 0; i < mGridHeight; i++)
 	{
-		mMap[i] = new float[mWidth];
-		for (int j = 0; j < mWidth; j++)
+		mMap[i] = new float[mGridWidth];
+		for (int j = 0; j < mGridWidth; j++)
 		{
-			if (mImage.getColor(i, j).getBrightness() <= 128)
+			// get num of blocks
+			int blockCount = 0;
+			int numGridPixels = mGridSize * mGridSize;
+			for (int k = 0; k < numGridPixels; k++)
+			{
+				auto color = mImage.getColor(j * mGridSize + k % mGridSize, i * mGridSize + k / mGridSize);
+				if (color.getBrightness() < 100)
+					blockCount++;
+			}
+			// set the grid a obstacle
+			if (blockCount > numGridPixels / 4)
+			{
 				mMap[i][j] = 256;
+			}
 			else
-				mMap[i][j] = 1;		// default cost is 1
+				mMap[i][j] = 1;
 		}
 	}
 }
 
 Grid * Grid::LoadFromImage(const char * const inPath)
 {
-	Grid* grid = new Grid(inPath);
+	Grid* grid = new Grid(inPath, 10, 800, 800);
 	return grid;
 }
 
@@ -77,12 +96,12 @@ float Grid::GetCost(int x, int y)
 
 float Grid::GetCost(int index)
 {
-	return mMap[index / mWidth][index % mWidth];
+	return mMap[index / mGridWidth][index % mGridWidth];
 }
 
 void Grid::SetCost(int index, float inCost)
 {
-	mMap[index / mWidth][index % mWidth] = inCost;
+	mMap[index / mGridWidth][index % mGridWidth] = inCost;
 }
 
 Direction Grid::GetDirection(int inSource, int inDest)
@@ -92,9 +111,9 @@ Direction Grid::GetDirection(int inSource, int inDest)
 		return Direction::Right;
 	if (diff == -1)
 		return Direction::Left;
-	if (diff == mWidth)
+	if (diff == mGridWidth)
 		return Direction::Down;
-	if (diff == -mWidth)
+	if (diff == -mGridWidth)
 		return Direction::Up;
 	
 	return Direction::Count;
@@ -102,7 +121,7 @@ Direction Grid::GetDirection(int inSource, int inDest)
 
 Direction Grid::GetDirection(int ix1, int iy1, int ix2, int iy2)
 {
-	return GetDirection(iy1 * mWidth + ix1, iy2 * mWidth + ix2);
+	return GetDirection(iy1 * mGridWidth + ix1, iy2 * mGridWidth + ix2);
 }
 
 int Grid::GetNext(int inSource, Direction inDirection)
@@ -110,19 +129,19 @@ int Grid::GetNext(int inSource, Direction inDirection)
 	switch (inDirection)
 	{
 	case Direction::Up:
-		if (inSource / mWidth == 0)
+		if (inSource / mGridWidth == 0)
 			return -1;
-		return inSource - mWidth;
+		return inSource - mGridWidth;
 	case Direction::Down:
-		if (inSource / mWidth == mHeight - 1)
+		if (inSource / mGridWidth == mGridHeight - 1)
 			return -1;
-		return inSource + mWidth;
+		return inSource + mGridWidth;
 	case Direction::Left:
-		if (inSource % mWidth == 0)
+		if (inSource % mGridWidth == 0)
 			return -1;
 		return inSource - 1;
 	case Direction::Right:
-		if (inSource % mWidth == mWidth - 1)
+		if (inSource % mGridWidth == mGridWidth - 1)
 			return -1;
 		return inSource + 1;
 	default:
@@ -135,19 +154,19 @@ int Grid::GetLast(int inDest, Direction inDirection)
 	switch (inDirection)
 	{
 	case Direction::Up:
-		if (inDest / mWidth == mHeight - 1)
+		if (inDest / mGridWidth == mGridHeight - 1)
 			return -1;
-		return inDest + mWidth;
+		return inDest + mGridWidth;
 	case Direction::Down:
-		if (inDest / mWidth == 0)
+		if (inDest / mGridWidth == 0)
 			return -1;
-		return inDest - mWidth;
+		return inDest - mGridWidth;
 	case Direction::Left:
-		if (inDest % mWidth == mWidth - 1)
+		if (inDest % mGridWidth == mGridWidth - 1)
 			return -1;
 		return inDest + 1;
 	case Direction::Right:
-		if (inDest % mWidth == 0)
+		if (inDest % mGridWidth == 0)
 			return -1;
 		return inDest - 1;
 	default:
@@ -157,9 +176,14 @@ int Grid::GetLast(int inDest, Direction inDirection)
 
 bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inFunction)
 {
+	mPath.clear();
+	mRecords.clear();
+	if (inSource < 0 || inSource >= mGridWidth * mGridHeight || inDest < 0 || inDest >= mGridWidth * mGridHeight)
+		return false;
 	if (inSource == inDest)
 	{
-		std::cout << "[" << inSource % mWidth << ", " << inSource / mWidth << "]" << std::endl;
+		//std::cout << "[" << inSource % mWidth << ", " << inSource / mWidth << "]" << std::endl;
+		mPath.push_back(inSource);
 		return true;
 	}
 	std::unordered_set<int> closeList;
@@ -177,8 +201,8 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 			break;
 
 		// get all children
-		int x = inSource % mWidth;
-		int y = inSource / mWidth;
+		int x = inSource % mGridWidth;
+		int y = inSource / mGridWidth;
 
 		for (int i = 0; i < (int)Direction::Count; i++)
 		{
@@ -221,29 +245,41 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 	else
 	{
 		// output path
-		std::vector<int> path;
+		//std::vector<int> path;
 		int last = GetLast(currentNode, mRecords[currentNode].GetDirection());
 		while (last != inSource)
 		{
 			last = GetLast(currentNode, mRecords[currentNode].GetDirection());
-			path.push_back(currentNode);
+			mPath.push_back(currentNode);
 			currentNode = last;
 		}
-		std::reverse(path.begin(), path.end());
 
-		std::cout << "[" << last % mWidth << ", " << last / mWidth << "]";
-		for (auto i : path)
+		mPath.push_back(last);
+		std::reverse(mPath.begin(), mPath.end());
+
+		for (auto point : mPath)
 		{
-			std::cout << "->" << "[" << i % mWidth << ", " << i / mWidth << "]";
+			std::cout << "[" << point % mGridWidth << ", " << point / mGridWidth << "] -> ";
 		}
 		std::cout << std::endl;
+
 		return true;
 	}
 }
 
 void Grid::Draw()
 {
+	ofSetColor(255);
 	mImage.draw(0, 0);
+}
+
+void Grid::DrawPath()
+{
+	ofSetColor(255, 0, 0, 255);
+	for (auto point : mPath)
+	{
+		ofDrawCircle(glm::vec2((point % mGridWidth + 0.5) * mGridSize, (point / mGridWidth + 0.5) * mGridSize), mGridSize / 2);
+	}
 }
 
 

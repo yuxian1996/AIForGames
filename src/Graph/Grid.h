@@ -13,7 +13,7 @@ class Grid
 public:
 	Grid(float** ipMap, int inWidth, int inHeight);
 	Grid(int inWidth, int inHeight);
-	Grid(const char* const inPath);
+	Grid(const char* const inPath, int inGridSize, int inImageWidth = 0, int inImageHeight = 0);
 
 	// Static
 	static Grid* LoadFromImage(const char* const inPath);
@@ -24,6 +24,12 @@ public:
 	float GetCost(int index);
 	void SetCost(int index, float inCost);
 	void SetImage(ofShortPixels inPixels) { mImage.loadImage("download.png"); }
+	int GetWidth() { return mWidth; }
+	int GetHeight() { return mHeight; }
+	int GetGridWidth() { return mGridWidth; }
+	int GetGridHeight() { return mGridHeight; }
+	ofImage& GetImage() { return mImage; }
+	int GetGridSize() { return mGridSize; }
 
 	Direction GetDirection(int inSource, int inDest);
 	Direction GetDirection(int ix1, int iy1, int ix2, int iy2);
@@ -35,6 +41,8 @@ public:
 
 	// Draw Grid
 	void Draw();
+	// Draw Path
+	void DrawPath();
 
 	// Const
 	static const float MaxCost;
@@ -42,6 +50,9 @@ public:
 private:
 	float** mMap;		// cost of each grid
 	int mWidth, mHeight;
+	int mGridSize = 1;
+	int mGridWidth, mGridHeight;
 	std::unordered_map<int, GridRecord> mRecords;
 	ofImage mImage;
+	std::vector<int> mPath;
 };
