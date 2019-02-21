@@ -257,11 +257,46 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 		mPath.push_back(last);
 		std::reverse(mPath.begin(), mPath.end());
 
-		for (auto point : mPath)
+		if (mPath.size() == 1)
+			return true;
+
+		// reset path to corners
+		std::vector<int> corners;
+		int x = mPath[0] % mGridWidth;
+		int y = mPath[0] / mGridWidth;
+		corners.push_back(mPath[0]);
+		corners.push_back(mPath[1]);
+		bool isHorizontal = abs(corners[0] - corners[1]) == 1;
+		for(int i = 2; i < mPath.size(); i++)
+		{
+			if (isHorizontal)
+			{
+				if(abs(mPath[i] - corners[corners.size() - 1]) == 1)
+					corners[corners.size() - 1] = mPath[i];
+				else
+				{
+					corners.push_back(mPath[i]);
+					isHorizontal = false;
+				}
+			}
+			else
+			{
+				if (abs(mPath[i] - corners[corners.size() - 1]) == mGridWidth)
+					corners[corners.size() - 1] = mPath[i];
+				else
+				{
+					corners.push_back(mPath[i]);
+					isHorizontal = true;
+				}
+			}
+		}
+
+		mPath.swap(corners);
+		/*for (auto point : mPath)
 		{
 			std::cout << "[" << point % mGridWidth << ", " << point / mGridWidth << "] -> ";
 		}
-		std::cout << std::endl;
+		std::cout << std::endl;*/
 
 		return true;
 	}
@@ -276,10 +311,20 @@ void Grid::Draw()
 void Grid::DrawPath()
 {
 	ofSetColor(255, 0, 0, 255);
-	for (auto point : mPath)
+	if (mPath.size() == 0)
+		return;
+	if(mPath.size() == 1)
+		ofDrawCircle(glm::vec2((mPath[0] % mGridWidth + 0.5) * mGridSize, (mPath[0] / mGridWidth + 0.5) * mGridSize), mGridSize / 2);
+	else
 	{
-		ofDrawCircle(glm::vec2((point % mGridWidth + 0.5) * mGridSize, (point / mGridWidth + 0.5) * mGridSize), mGridSize / 2);
+		for(int i = 0; i < mPath.size() - 1; i++)
+		{
+			ofSetLineWidth(mGridSize / 2);
+			ofDrawLine(glm::vec2((mPath[i] % mGridWidth + 0.5) * mGridSize, (mPath[i] / mGridWidth + 0.5) * mGridSize),
+				glm::vec2((mPath[i + 1] % mGridWidth + 0.5) * mGridSize, (mPath[i + 1] / mGridWidth + 0.5) * mGridSize));
+		}
 	}
+	
 }
 
 

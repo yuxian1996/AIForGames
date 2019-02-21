@@ -50,6 +50,11 @@ namespace
 		return sqrtf(pow(sGraph->GetNode(a).x - sGraph->GetNode(b).x, 2) + pow(sGraph->GetNode(a).y - sGraph->GetNode(b).y, 2));
 	}
 
+	float GetEuclideanDistance_Grid(int a, int b)
+	{
+		return sqrtf(pow(a % sGrid->GetGridWidth() - b % sGrid->GetGridWidth(), 2) + pow(a / sGrid->GetGridWidth() - b / sGrid->GetGridWidth(), 2));
+	}
+
 	float GetRandomDistance(int a, int b)
 	{
 		return (float)rand() / RAND_MAX * Graph::width;
