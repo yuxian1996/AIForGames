@@ -18,7 +18,7 @@ public:
 		mMaxSpeed(inMaxSpeed), mMaxRotation(inMaxRotation), mMaxAcceleration(inMaxAcceleration), mMaxAngularAcc(inMaxAngular), mTargetRadius(inTargetRadius), 
 		mSlowRadius(inSlowRadius), mTimeToTarget(inTimeToTarget), mWanderDistance(inWanderDistance), mWanderRadius(inWanderRadius),
 		mSlowAngleThreshold(inSlowAngleThreshold), mTargetAngleThreshold(inTargetAngleThreshold), mTimeToAngleTarget(inTimeToAngleTarget), K(k),
-		mColor(255){};
+		mColor(0, 200, 200, 255){};
 	~Boid();
 
 	// Getter & Setter

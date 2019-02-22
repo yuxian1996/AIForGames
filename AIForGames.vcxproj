@@ -192,6 +192,7 @@
     <ClCompile Include="src\Steering\ArriveSteering.cpp" />
     <ClCompile Include="src\Steering\BasicKinematicSteering.cpp" />
     <ClCompile Include="src\Steering\ComplexSteering\Flocking.cpp" />
+    <ClCompile Include="src\Steering\ComplexSteering\PathFollow.cpp" />
     <ClCompile Include="src\Steering\ComplexSteering\SeekArrive.cpp" />
     <ClCompile Include="src\Steering\SeperationSteering.cpp" />
     <ClCompile Include="src\Steering\SeekSteering.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="src\Steering\ArriveSteering.h" />
     <ClInclude Include="src\Steering\BasicKinematicSteering.h" />
     <ClInclude Include="src\Steering\ComplexSteering\Flocking.h" />
+    <ClInclude Include="src\Steering\ComplexSteering\PathFollow.h" />
     <ClInclude Include="src\Steering\ComplexSteering\SeekArrive.h" />
     <ClInclude Include="src\Steering\SeperationSteering.h" />
     <ClInclude Include="src\Steering\SeekSteering.h" />

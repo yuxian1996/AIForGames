@@ -4,6 +4,8 @@
 
 #include "Scene.h"
 
+class Boid;
+
 class ofApp : public ofBaseApp{
 
 public:
@@ -28,6 +30,7 @@ public:
 
 private:
 	std::vector<Scene*> mpScenes;
+	Boid* mpBoid;
 	const int WIDTH = 1024;
 	const int HEIGHT = 768;
 	Kinematic mSeekTarget;

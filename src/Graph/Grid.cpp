@@ -8,8 +8,10 @@
 
 #include <iostream>
 #include <unordered_set>
+#include <set>
 #include <algorithm>
 #include <fstream>
+#include <functional>
 
 const float Grid::MaxCost = 255.0f;
 
@@ -187,14 +189,22 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 		return true;
 	}
 	std::unordered_set<int> closeList;
-	std::vector<int> openList;
-	openList.push_back(inSource);
+
+	auto& records = mRecords;
+	std::function<bool(int,int)> compare = [&records](int a, int b)
+	{
+		return records[a].GetEstimatedTotal() < records[b].GetEstimatedTotal();
+	};
+
+	std::multiset<int, std::function<bool(int, int)>> openList(compare);
+	
+	openList.insert(inSource);
 
 	int currentNode = -1;
 
 	while (openList.size() != 0)
 	{
-		currentNode = openList.front();
+		currentNode = *openList.begin();
 		openList.erase(openList.begin());
 
 		if (currentNode == inDest)
@@ -218,7 +228,7 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 			{
 				// add new record
 				mRecords[next] = GridRecord(next, GetDirection(currentNode, next), g, f);
-				openList.push_back(next);
+				openList.insert(next);
 			}
 			else if (mRecords[next].GetEstimatedTotal() > f)
 			{
@@ -226,14 +236,10 @@ bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inF
 				mRecords[next].SetCostSoFar(g);
 				mRecords[next].SetEstimatedTotal(f);
 				mRecords[next].SetDirection(GetDirection(currentNode, next));
+				openList.erase(next);
+				openList.insert(next);
 			}
 		}
-		// resort
-		auto& records = mRecords;
-		std::sort(openList.begin(), openList.end(), [&records](int a, int b)
-		{
-			return records[a].GetEstimatedTotal() < records[b].GetEstimatedTotal();
-		});
 		closeList.insert(currentNode);
 	}
 

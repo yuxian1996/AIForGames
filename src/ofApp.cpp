@@ -243,10 +243,18 @@ void ofApp::setup(){
 		{
 			sGrid = Grid::LoadFromImage("download.png");
 
-			//sGrid->FindPath(0, 10984, GetZero);
+			Kinematic kinematic(glm::vec2(200, 200), 0, glm::vec2(0, 0), 0);
+			mpBoid = new Boid(kinematic, &mSeekTarget, 100, 0, 300, 0, 10, 70, 0.1f);
+			SeekDynamicArrive* dynamicSeekSteering = new SeekDynamicArrive(mpBoid);
+			mpBoid->mpDynamicSteering = dynamicSeekSteering;
+			auto alignSteering = new KinematicAlignSteering(mpBoid);
+			mpBoid->mpKinematicOrientationSteering = alignSteering;
 
-			//delete sGrid;
-			//sGrid = nullptr;
+			auto scene = new Scene({ mpBoid });
+			mpScenes.push_back(scene);
+
+			
+			
 		}
 	}
 
@@ -380,14 +388,15 @@ void ofApp::draw(){
 	
 	ofBackground(20);
 
-	if (mSceneIndex >= 0 && mSceneIndex < mpScenes.size())
-		mpScenes[mSceneIndex]->Draw();
-
 	if (sGrid != nullptr)
 	{
 		sGrid->Draw();
 		sGrid->DrawPath();
 	}
+
+	if (mSceneIndex >= 0 && mSceneIndex < mpScenes.size())
+		mpScenes[mSceneIndex]->Draw();
+
 }
 
 void ofApp::exit()
@@ -441,7 +450,7 @@ void ofApp::mouseReleased(int x, int y, int button){
 	if (x > sGrid->GetWidth() || y > sGrid->GetHeight())
 		return;
 
-	if (bIsFirst)
+	/*if (bIsFirst)
 	{
 		mStartIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
 	}
@@ -450,7 +459,11 @@ void ofApp::mouseReleased(int x, int y, int button){
 		mEndIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
 		sGrid->FindPath(mStartIndex, mEndIndex , GetManhattanDistance_Grid);
 	}
-	bIsFirst = !bIsFirst;
+	bIsFirst = !bIsFirst;*/
+
+	int index = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
+	int mpBoidIndex = sGrid->GetGridWidth() * (mpBoid->mKinematic.position.y / sGrid->GetGridSize()) + mpBoid->mKinematic.position.x / sGrid->GetGridSize();
+	sGrid->FindPath(mpBoidIndex, index, GetManhattanDistance_Grid);
 }
 
 //--------------------------------------------------------------

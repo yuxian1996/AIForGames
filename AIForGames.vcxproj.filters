@@ -52,6 +52,9 @@
     <ClCompile Include="src\Graph\Grid.cpp">
       <Filter>src\Graph</Filter>
     </ClCompile>
+    <ClCompile Include="src\Steering\ComplexSteering\PathFollow.cpp">
+      <Filter>src\Steering\ComplexSteering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="src\Graph\Grid.h">
       <Filter>src\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Steering\ComplexSteering\PathFollow.h">
+      <Filter>src\Steering\ComplexSteering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
