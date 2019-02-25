@@ -30,11 +30,14 @@ public:
 	int GetGridHeight() { return mGridHeight; }
 	ofImage& GetImage() { return mImage; }
 	int GetGridSize() { return mGridSize; }
+	const std::vector<int> GetPath() { return mPath; }
 
 	Direction GetDirection(int inSource, int inDest);
 	Direction GetDirection(int ix1, int iy1, int ix2, int iy2);
 	int GetNext(int inSource, Direction inDirection);
 	int GetLast(int inDest, Direction inDirection);
+
+	void GirdIndexToXY(int index, int& oX, int& oY);
 
 	// Find Path
 	bool FindPath(int inSource, int inDest, std::function<float(int, int)> inFunction);

@@ -176,6 +176,12 @@ int Grid::GetLast(int inDest, Direction inDirection)
 	}
 }
 
+void Grid::GirdIndexToXY(int index, int& oX, int& oY)
+{
+	oX = (index % mGridWidth + 0.5) * mGridSize;
+	oY = (index / mGridWidth + 0.5) * mGridSize;
+}
+
 bool Grid::FindPath(int inSource, int inDest, std::function<float(int, int)> inFunction)
 {
 	mPath.clear();

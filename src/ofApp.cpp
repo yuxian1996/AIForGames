@@ -8,6 +8,7 @@
 #include "Steering/ComplexSteering/SeekArrive.h"
 #include "Steering/AlignSteering.h"
 #include "Steering/ComplexSteering/Flocking.h"
+#include "Steering/ComplexSteering/PathFollow.h"
 #include "Scene.h"
 
 #include "Graph/Graph.h"
@@ -28,6 +29,8 @@ namespace
 {
 	Graph* sGraph = nullptr;
 	Grid* sGrid = nullptr;
+	std::vector<Kinematic> sPath;
+	PathFollow* spPathFollow = nullptr;
 
 	void ReleaseGraph()
 	{
@@ -243,17 +246,16 @@ void ofApp::setup(){
 		{
 			sGrid = Grid::LoadFromImage("download.png");
 
-			Kinematic kinematic(glm::vec2(200, 200), 0, glm::vec2(0, 0), 0);
-			mpBoid = new Boid(kinematic, &mSeekTarget, 100, 0, 300, 0, 10, 70, 0.1f);
-			SeekDynamicArrive* dynamicSeekSteering = new SeekDynamicArrive(mpBoid);
-			mpBoid->mpDynamicSteering = dynamicSeekSteering;
+			Kinematic kinematic(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
+			mpBoid = new Boid(kinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+			spPathFollow = new PathFollow(mpBoid, sPath);
+			mpBoid->mpDynamicSteering = spPathFollow;
 			auto alignSteering = new KinematicAlignSteering(mpBoid);
 			mpBoid->mpKinematicOrientationSteering = alignSteering;
 
 			auto scene = new Scene({ mpBoid });
 			mpScenes.push_back(scene);
 
-			
 			
 		}
 	}
@@ -450,20 +452,22 @@ void ofApp::mouseReleased(int x, int y, int button){
 	if (x > sGrid->GetWidth() || y > sGrid->GetHeight())
 		return;
 
-	/*if (bIsFirst)
-	{
-		mStartIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
-	}
-	else
-	{
-		mEndIndex = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
-		sGrid->FindPath(mStartIndex, mEndIndex , GetManhattanDistance_Grid);
-	}
-	bIsFirst = !bIsFirst;*/
-
+	// find path
 	int index = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
-	int mpBoidIndex = sGrid->GetGridWidth() * (mpBoid->mKinematic.position.y / sGrid->GetGridSize()) + mpBoid->mKinematic.position.x / sGrid->GetGridSize();
+	int mpBoidIndex = sGrid->GetGridWidth() * ((int)mpBoid->mKinematic.position.y / sGrid->GetGridSize()) + (int)mpBoid->mKinematic.position.x / sGrid->GetGridSize();
 	sGrid->FindPath(mpBoidIndex, index, GetManhattanDistance_Grid);
+
+	// reset path
+	sPath.clear();
+	std::vector<int> pathIndex = sGrid->GetPath();
+	for (int i = 0; i < pathIndex.size(); i++)
+	{
+		int x = 0, y = 0;
+		sGrid->GirdIndexToXY(pathIndex[i], x, y);
+		sPath.push_back(Kinematic(glm::vec2(x, y), 0, glm::vec2(0, 0), 0));
+	}
+	spPathFollow->SetPath(sPath);
+
 }
 
 //--------------------------------------------------------------
