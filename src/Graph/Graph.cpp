@@ -86,9 +86,13 @@ Graph* Graph::GenerateRandomGraph(int numNode)
 
 bool Graph::FindPath(int inSource, int inDest, std::function<float(int, int)> inFunction)
 {
+	mRecords.clear();
+
 	if (inSource == inDest)
-	{
+	{	
+#ifdef _DEBUG
 		std::cout << inSource << std::endl;
+#endif // DEBUG
 		return true;
 	}
 	std::unordered_set<int> closeList;
@@ -159,12 +163,16 @@ bool Graph::FindPath(int inSource, int inDest, std::function<float(int, int)> in
 		}
 		std::reverse(path.begin(), path.end());
 
+#ifdef _DEBUG
 		std::cout << last + 1;
 		for (auto i : path)
 		{
 			std::cout << "->" << i + 1;
 		}
 		std::cout << std::endl;
+
+#endif // DEBUG
+
 		return true;
 	}
 }

@@ -83,7 +83,7 @@ void ofApp::setup(){
 	{
 		srand(time(nullptr));
 
-		goto CustomGrid;
+		//goto CustomGrid;
 		// Test first graph
 		{
 			sGraph = Graph::Load("data/map.txt");
@@ -118,6 +118,7 @@ void ofApp::setup(){
 			{
 				total = 0;
 				num = 0;
+				totalNodesVisited = 0;
 				for (int i = 0; i < 100; i++)
 				{
 					auto beginClock = std::chrono::high_resolution_clock::now();
@@ -127,6 +128,7 @@ void ofApp::setup(){
 					{
 						total += std::chrono::duration_cast<std::chrono::microseconds>(endClock - beginClock).count();
 						num++;
+						totalNodesVisited += sGraph->GetRecord().size();
 					}
 					sGraph->ClearRecord();
 				}
@@ -140,6 +142,7 @@ void ofApp::setup(){
 			{
 				total = 0;
 				num = 0;
+				totalNodesVisited = 0;
 				for (int i = 0; i < 100; i++)
 				{
 					auto beginClock = std::chrono::high_resolution_clock::now();
@@ -149,6 +152,7 @@ void ofApp::setup(){
 					{
 						total += std::chrono::duration_cast<std::chrono::microseconds>(endClock - beginClock).count();
 						num++;
+						totalNodesVisited += sGraph->GetRecord().size();
 					}
 					sGraph->ClearRecord();
 				}
@@ -161,6 +165,7 @@ void ofApp::setup(){
 			{
 				total = 0;
 				num = 0;
+				totalNodesVisited = 0;
 				for (int i = 0; i < 100; i++)
 				{
 					auto beginClock = std::chrono::high_resolution_clock::now();
@@ -170,6 +175,7 @@ void ofApp::setup(){
 					{
 						total += std::chrono::duration_cast<std::chrono::microseconds>(endClock - beginClock).count();
 						num++;
+						totalNodesVisited += sGraph->GetRecord().size();
 					}
 					sGraph->ClearRecord();
 				}
@@ -186,7 +192,7 @@ void ofApp::setup(){
 
 	SecondGraph:
 
-		int numNode = 5000;
+		int numNode = 2000;
 		// Test large graph
 		{
 			sGraph = Graph::GenerateRandomGraph(numNode);
@@ -195,7 +201,7 @@ void ofApp::setup(){
 			int totalNodesVisited = 0;
 			int num = 0;
 
-			// A* 
+			// A* - Euclidean
 			{
 				for (int i = 0; i < 100; i++)
 				{
@@ -215,8 +221,60 @@ void ofApp::setup(){
 					<< "Average number of nodes visited = " << (float)totalNodesVisited / num << "\n" << std::endl;
 			}
 
+			// A* - Manhattan
+			{
+				int total = 0;
+				int totalNodesVisited = 0;
+				int num = 0;
+
+				for (int i = 0; i < 100; i++)
+				{
+					auto beginClock = std::chrono::high_resolution_clock::now();
+					bool result = sGraph->FindPath(RandomRange(0, numNode), RandomRange(0, numNode), GetManhattanDistance);
+					auto endClock = std::chrono::high_resolution_clock::now();
+					if (result)
+					{
+						total += std::chrono::duration_cast<std::chrono::milliseconds>(endClock - beginClock).count();
+						totalNodesVisited += sGraph->GetRecord().size();
+						num++;
+					}
+					sGraph->ClearRecord();
+				}
+				std::cout << "\nLarge map (generated randomly) by A*: manhattan distance: \n"
+					<< "Average elpased time = " << (float)total / num << " microseconds \n"
+					<< "Average number of nodes visited = " << (float)totalNodesVisited / num << "\n" << std::endl;
+			}
+
+			// A* - Random
+			{
+				int total = 0;
+				int totalNodesVisited = 0;
+				int num = 0;
+
+				for (int i = 0; i < 100; i++)
+				{
+					auto beginClock = std::chrono::high_resolution_clock::now();
+					bool result = sGraph->FindPath(RandomRange(0, numNode), RandomRange(0, numNode), GetRandomDistance);
+					auto endClock = std::chrono::high_resolution_clock::now();
+					if (result)
+					{
+						total += std::chrono::duration_cast<std::chrono::milliseconds>(endClock - beginClock).count();
+						totalNodesVisited += sGraph->GetRecord().size();
+						num++;
+					}
+					sGraph->ClearRecord();
+				}
+				std::cout << "\nLarge map (generated randomly) by A*: random: \n"
+					<< "Average elpased time = " << (float)total / num << " microseconds \n"
+					<< "Average number of nodes visited = " << (float)totalNodesVisited / num << "\n" << std::endl;
+			}
+
+
 			// Dijstra
 			{
+				total = 0;
+				num = 0;
+				totalNodesVisited = 0;
 				for (int i = 0; i < 100; i++)
 				{
 					auto beginClock = std::chrono::high_resolution_clock::now();
