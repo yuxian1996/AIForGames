@@ -88,7 +88,7 @@ void ofApp::setup(){
 		{
 			sGraph = Graph::Load("data/map.txt");
 
-			int numNode = 20;
+			int numNode = 22;
 			int total = 0;
 			int totalNodesVisited = 0;
 			int num = 0;
@@ -203,6 +203,7 @@ void ofApp::setup(){
 
 			// A* - Euclidean
 			{
+				std::cout << "Plase wait, calculating 100 graphs...." << std::endl;
 				for (int i = 0; i < 100; i++)
 				{
 					auto beginClock = std::chrono::high_resolution_clock::now();
@@ -226,6 +227,7 @@ void ofApp::setup(){
 				int total = 0;
 				int totalNodesVisited = 0;
 				int num = 0;
+				std::cout << "Plase wait, calculating 100 graphs...." << std::endl;
 
 				for (int i = 0; i < 100; i++)
 				{
@@ -250,6 +252,7 @@ void ofApp::setup(){
 				int total = 0;
 				int totalNodesVisited = 0;
 				int num = 0;
+				std::cout << "Plase wait, calculating 100 graphs...." << std::endl;
 
 				for (int i = 0; i < 100; i++)
 				{
@@ -272,6 +275,7 @@ void ofApp::setup(){
 
 			// Dijstra
 			{
+				std::cout << "Plase wait, calculating 100 graphs...." << std::endl;
 				total = 0;
 				num = 0;
 				totalNodesVisited = 0;

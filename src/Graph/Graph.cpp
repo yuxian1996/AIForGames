@@ -170,8 +170,8 @@ bool Graph::FindPath(int inSource, int inDest, std::function<float(int, int)> in
 			std::cout << "->" << i + 1;
 		}
 		std::cout << std::endl;
-
 #endif // DEBUG
+
 
 		return true;
 	}
