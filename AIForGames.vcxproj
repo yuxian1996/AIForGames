@@ -181,6 +181,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Boid.cpp" />
+    <ClCompile Include="src\DecisionMaking\ActionManager.cpp" />
     <ClCompile Include="src\Graph\Graph.cpp" />
     <ClCompile Include="src\Graph\Grid.cpp" />
     <ClCompile Include="src\Kinematic.cpp" />
@@ -202,6 +203,13 @@
   <ItemGroup>
     <ClInclude Include="Manager.hpp" />
     <ClInclude Include="src\Boid.h" />
+    <ClInclude Include="src\DecisionMaking\Action.h" />
+    <ClInclude Include="src\DecisionMaking\ActionManager.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTActionNode.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_Bool.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTNode.h" />
     <ClInclude Include="src\Graph\Edge.h" />
     <ClInclude Include="src\Graph\Graph.h" />
     <ClInclude Include="src\Graph\Grid.h" />

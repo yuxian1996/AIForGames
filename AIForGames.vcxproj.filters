@@ -55,6 +55,9 @@
     <ClCompile Include="src\Steering\ComplexSteering\PathFollow.cpp">
       <Filter>src\Steering\ComplexSteering</Filter>
     </ClCompile>
+    <ClCompile Include="src\DecisionMaking\ActionManager.cpp">
+      <Filter>src\DecisionMaking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -71,6 +74,12 @@
     </Filter>
     <Filter Include="src\Graph">
       <UniqueIdentifier>{1dfb4489-b997-47d5-9a22-e87589948bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\DecisionMaking">
+      <UniqueIdentifier>{37a49afb-9812-483f-a08f-0e46fea621c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\DecisionMaking\DecisionTree">
+      <UniqueIdentifier>{93ef9235-332a-4421-9fde-4b595cf71215}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +148,27 @@
     </ClInclude>
     <ClInclude Include="src\Steering\ComplexSteering\PathFollow.h">
       <Filter>src\Steering\ComplexSteering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\ActionManager.h">
+      <Filter>src\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Action.h">
+      <Filter>src\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTActionNode.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTNode.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_Bool.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
