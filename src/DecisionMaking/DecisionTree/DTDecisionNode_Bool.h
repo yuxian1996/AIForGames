@@ -16,7 +16,7 @@ public:
 	}
 
 	virtual ~DTDecisionNode_Bool() = default;
-	virtual int MakeDecision() { return mDecisionFunction() ? 1 : 0; };
+	virtual uint8_t MakeDecision() { return mDecisionFunction() ? 1 : 0; };
 
 private:
 	std::function<bool()> mDecisionFunction;

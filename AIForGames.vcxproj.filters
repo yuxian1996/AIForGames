@@ -170,6 +170,12 @@
     <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h">
       <Filter>src\DecisionMaking\DecisionTree</Filter>
     </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_Enum.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_FloatRange.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

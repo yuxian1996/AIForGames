@@ -9,7 +9,7 @@
 class ActionCompare
 {
 public:
-	bool operator() (const std::shared_ptr<Action> lhs, const std::shared_ptr<Action> rhs)
+	bool operator() (const std::shared_ptr<Action> lhs, const std::shared_ptr<Action> rhs) const
 	{
 		return lhs->GetPriority() < rhs->GetPriority();
 	}
