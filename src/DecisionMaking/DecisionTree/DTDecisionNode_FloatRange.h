@@ -5,17 +5,19 @@
 #include <vector>
 #include <functional>
 
+class Context;
+
 class DTDecisionNode_FloatRange : public DTDecisionNode
 {
 public:
 	DTDecisionNode_FloatRange() = default;
-	DTDecisionNode_FloatRange(const std::vector<std::pair<float, float>>& inRanges, const std::function<float()>& inFunction)
+	DTDecisionNode_FloatRange(const std::vector<std::pair<float, float>>& inRanges, const std::function<float(const Context* const)>& inFunction)
 		: mRanges(inRanges), mFunction(inFunction) {}
 	virtual ~DTDecisionNode_FloatRange() override = default;
 
-	virtual uint8_t MakeDecision() override
+	virtual uint8_t MakeDecision(const Context* const ipContext) override
 	{
-		float value = mFunction();
+		float value = mFunction(ipContext);
 		for(int i = 0; i < mRanges.size(); i++)
 		{
 			if (value >= mRanges[i].first && value <= mRanges[i].second)
@@ -27,5 +29,5 @@ public:
 
 private:
 	std::vector<std::pair<float, float>> mRanges;
-	std::function<float()> mFunction;
+	std::function<float(const Context* const)> mFunction;
 };

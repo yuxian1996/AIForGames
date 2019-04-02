@@ -1,15 +1,17 @@
 #pragma once
 
+#include "Context.h"
+
 #include <cstdint>
 
 class Action
 {
 public:
-	Action() = default;
-	Action(const uint8_t inPriority) : mPriority(inPriority) {}
+	//Action() = default;
+	Action(const uint8_t inPriority = 0) : mPriority(inPriority) {}
 	virtual ~Action() = default;
 
-	void Execute(float inDeltaTime) { mRunningTime += inDeltaTime; OnActionExecute(); };
+	void Execute(float inDeltaTime, Context* ipContext) { mRunningTime += inDeltaTime; OnActionExecute(ipContext); };
 	void Wait(float inDeltaTime) { mWaitingTime += inDeltaTime; }
 	bool ShouldExpire() { return mWaitingTime >= mExpireTime; }
 	bool IsFinished() { return mRunningTime >= mExpireTime; }
@@ -21,7 +23,7 @@ public:
 	float GetRunningTime() const { return mRunningTime; }
 
 protected:
-	virtual void OnActionExecute() = 0;
+	virtual void OnActionExecute(Context* ipContext) = 0;
 
 private:
 	float mExpireTime = 10.0f;
@@ -29,5 +31,4 @@ private:
 	float mExecuteTime = 3.0f;
 	float mRunningTime = 0;
 	uint8_t mPriority = 0;
-	
 };

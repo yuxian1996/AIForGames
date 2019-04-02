@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Action.h"
+#include "DecisionTree/DecisionTree.h"
 
 #include <set>
 #include <vector>
@@ -21,10 +22,18 @@ public:
 	ActionManager() = default;
 	~ActionManager() = default;
 
+	void Init(DecisionTree* ipDecisionTree, Context* ipContext);
 	void Run(float inDeltaTime);
 	void AddAction(std::shared_ptr<Action>);
 
 	std::set<std::shared_ptr<Action>, ActionCompare> mQueuedActions;
 	std::shared_ptr<Action> mpCurrentAction;
 	std::vector<std::shared_ptr<Action>> mPendingExpiredActions;
+
+private:
+	void RunAction(float inDeltaTime);
+
+	DecisionTree* mpDecisionTree;
+	Context* mpContext;
+
 };

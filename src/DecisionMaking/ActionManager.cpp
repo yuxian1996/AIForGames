@@ -2,7 +2,21 @@
 
 #include <algorithm>
 
+void ActionManager::Init(DecisionTree * ipDecisionTree, Context * ipContext)
+{
+	mpDecisionTree = ipDecisionTree;
+	mpContext = ipContext;
+}
+
 void ActionManager::Run(float inDeltaTime)
+{
+	auto action = mpDecisionTree->GetAction(mpContext);
+	AddAction(action);
+
+	RunAction(inDeltaTime);
+}
+
+void ActionManager::RunAction(float inDeltaTime)
 {
 	// move queued actions to current actions
 	if (mpCurrentAction == nullptr && mQueuedActions.size() > 0)
@@ -15,7 +29,7 @@ void ActionManager::Run(float inDeltaTime)
 	// execute actions
 	if (mpCurrentAction != nullptr)
 	{
-		mpCurrentAction->Execute(inDeltaTime);
+		mpCurrentAction->Execute(inDeltaTime, mpContext);
 		if (mpCurrentAction->IsFinished())
 		{
 			mpCurrentAction = nullptr;

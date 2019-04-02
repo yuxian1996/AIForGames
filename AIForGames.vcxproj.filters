@@ -81,6 +81,9 @@
     <Filter Include="src\DecisionMaking\DecisionTree">
       <UniqueIdentifier>{93ef9235-332a-4421-9fde-4b595cf71215}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\DecisionMaking\Actions">
+      <UniqueIdentifier>{eacef38d-7ecc-4dc6-9de3-1b4ecc979ac8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -175,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_FloatRange.h">
       <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Context.h">
+      <Filter>src\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DT_Wanderer.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_OutputMessage.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

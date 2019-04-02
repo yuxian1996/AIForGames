@@ -15,6 +15,9 @@
 #include "Graph/NodeRecord.h"
 #include "Graph/Grid.h"
 
+#include "DecisionMaking/DecisionTree/DT_Wanderer.h"
+#include "DecisionMaking/ActionManager.h"
+
 #include <graphics/ofGraphics.h>
 #include <functional>
 #include <queue>
@@ -76,6 +79,7 @@ namespace
 }
 
 
+ActionManager* sActionManager = nullptr;
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
@@ -83,7 +87,7 @@ void ofApp::setup(){
 	{
 		srand(time(nullptr));
 
-		//goto CustomGrid;
+		goto CustomGrid;
 		// Test first graph
 		{
 			sGraph = Graph::Load("data/map.txt");
@@ -318,6 +322,11 @@ void ofApp::setup(){
 			auto scene = new Scene({ mpBoid });
 			mpScenes.push_back(scene);
 
+			DT_Wanderer* tree = new DT_Wanderer();
+			tree->Init();
+			
+			sActionManager = new ActionManager();
+			sActionManager->Init(tree, new Context(mpBoid));
 			
 		}
 	}
@@ -529,6 +538,8 @@ void ofApp::mouseReleased(int x, int y, int button){
 		sPath.push_back(Kinematic(glm::vec2(x, y), 0, glm::vec2(0, 0), 0));
 	}
 	spPathFollow->SetPath(sPath);
+
+	sActionManager->Run(1);
 
 }
 

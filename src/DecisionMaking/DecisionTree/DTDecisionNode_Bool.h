@@ -4,11 +4,13 @@
 
 #include <functional>
 
+class Context;
+
 class DTDecisionNode_Bool : public DTDecisionNode
 {
 public:
 	DTDecisionNode_Bool() = default;
-	DTDecisionNode_Bool(DTNode* ipFalseChild, DTNode* ipTrueChild, std::function<bool()> inFunction)
+	DTDecisionNode_Bool(DTNode* ipFalseChild, DTNode* ipTrueChild, std::function<bool(const Context* const)> inFunction)
 		: mDecisionFunction(inFunction)
 	{
 		mChildren.push_back(ipFalseChild);
@@ -16,9 +18,9 @@ public:
 	}
 
 	virtual ~DTDecisionNode_Bool() = default;
-	virtual uint8_t MakeDecision() { return mDecisionFunction() ? 1 : 0; };
+	virtual uint8_t MakeDecision(const Context* const ipContext) { return mDecisionFunction(ipContext) ? 1 : 0; };
 
 private:
-	std::function<bool()> mDecisionFunction;
+	std::function<bool(const Context* const)> mDecisionFunction;
 
 };

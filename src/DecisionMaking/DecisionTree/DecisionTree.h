@@ -3,6 +3,7 @@
 #include "DTNode.h"
 #include "../Action.h"
 #include "../../Boid.h"
+#include "../Context.h"
 
 #include <memory>
 #include <vector>
@@ -11,15 +12,12 @@ class DecisionTree
 {
 public:
 	DecisionTree() = default;
-	~DecisionTree() = default;
+	virtual ~DecisionTree() = default;
 
 	virtual void Init() = 0;
-	std::shared_ptr<Action> GetAction() { mpRoot->GetAction(); }
-
-	const Boid* GetOwner() { return mpOwnerBoid; }
+	std::shared_ptr<Action> GetAction(const Context* const ipContext) { return mpRoot->GetAction(ipContext); }
 
 protected:
 	DTNode* mpRoot;
 	std::vector<DTNode*> mNodes;
-	const Boid* mpOwnerBoid;	// cached owner for each GetAction, safe in single-thread
 };

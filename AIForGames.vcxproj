@@ -205,6 +205,8 @@
     <ClInclude Include="src\Boid.h" />
     <ClInclude Include="src\DecisionMaking\Action.h" />
     <ClInclude Include="src\DecisionMaking\ActionManager.h" />
+    <ClInclude Include="src\DecisionMaking\Actions\Action_OutputMessage.h" />
+    <ClInclude Include="src\DecisionMaking\Context.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTActionNode.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode.h" />
@@ -212,6 +214,7 @@
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_Enum.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_FloatRange.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTNode.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DT_Wanderer.h" />
     <ClInclude Include="src\Graph\Edge.h" />
     <ClInclude Include="src\Graph\Graph.h" />
     <ClInclude Include="src\Graph\Grid.h" />
