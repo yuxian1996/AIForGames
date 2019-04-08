@@ -2,12 +2,14 @@
 
 #include "Boid.h"
 
-Scene::Scene(const std::vector<Boid*>& ipBoids, Group* ipGroup)
+Scene::Scene(const std::vector<Boid*>& ipBoids, Group* ipGroup, Boid * ipPlayer)
 {
+	mpPlayer = ipPlayer;
 	mpBoids = ipBoids;
 	for (auto pBoid : mpBoids)
 	{
 		initalKinematics.push_back(pBoid->mKinematic);
+		pBoid->mpPlayer = ipPlayer;
 	}
 	mpGroup = ipGroup;
 }
@@ -23,6 +25,11 @@ Scene::~Scene()
 	}
 
 	mpBoids.clear();
+	if (mpPlayer != nullptr)
+	{
+		delete mpPlayer;
+		mpPlayer = nullptr;
+	}
 }
 
 void Scene::Update(float inDeltaTime)
@@ -34,6 +41,9 @@ void Scene::Update(float inDeltaTime)
 	{
 		pBoid->Update(inDeltaTime);
 	}
+
+	if(mpPlayer)
+		mpPlayer->Update(inDeltaTime);
 }
 
 void Scene::Draw()
@@ -42,6 +52,9 @@ void Scene::Draw()
 	{
 		pBoid->Draw();
 	}
+
+	if(mpPlayer)
+		mpPlayer->Draw();
 }
 
 void Scene::Reset()

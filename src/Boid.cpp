@@ -2,6 +2,7 @@
 
 #include "Steering/Steering.h"
 #include "SteeringOutput.h"
+#include "DecisionMaking/ActionManager.h"
 
 #include <glm/glm.hpp>
 #include <ofGraphics.h>
@@ -43,6 +44,9 @@ void Boid::Draw() const
 
 void Boid::Update(float inDeltaTime)
 {	
+	if(mpActionManager)
+		mpActionManager->Run(inDeltaTime);
+
 	auto oldOri = mKinematic.orientation;
 	// update dynamic steering only if it has dynamic steering
 	if (mpDynamicSteering != nullptr)

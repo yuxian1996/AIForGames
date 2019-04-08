@@ -32,6 +32,7 @@ void ActionManager::RunAction(float inDeltaTime)
 		mpCurrentAction->Execute(inDeltaTime, mpContext);
 		if (mpCurrentAction->IsFinished())
 		{
+			mpCurrentAction->Reset();
 			mpCurrentAction = nullptr;
 		}
 	}
@@ -50,6 +51,7 @@ void ActionManager::RunAction(float inDeltaTime)
 	std::sort(mPendingExpiredActions.begin(), mPendingExpiredActions.end());
 	for (auto action : mPendingExpiredActions)
 	{
+		action->Reset();
 		mQueuedActions.erase(action);
 	}
 
@@ -57,5 +59,6 @@ void ActionManager::RunAction(float inDeltaTime)
 
 void ActionManager::AddAction(std::shared_ptr<Action> ipAction)
 {
-	mQueuedActions.insert(ipAction);
+	if(mQueuedActions.find(ipAction) == mQueuedActions.end())
+		mQueuedActions.insert(ipAction);
 }

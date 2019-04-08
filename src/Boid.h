@@ -2,10 +2,12 @@
 
 #include "Kinematic.h"
 #include "Notation/Notation.h"
+#include "DecisionMaking/ActionManager.h"
 
 class KinematicSteering;
 class DynamicSteering;
 class Group;
+class ActionManager;
 
 class Boid
 {
@@ -39,6 +41,8 @@ public:
 public:
 	Kinematic mKinematic;
 	const Kinematic* mpTarget;
+	ActionManager* mpActionManager = nullptr;
+	Boid* mpPlayer;
 
 	const Group* mpGroup;
 	const Boid* mpLeader;

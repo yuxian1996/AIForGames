@@ -42,6 +42,11 @@ public:
 		mpBoid->mpTarget = GetNearestCorner();
 	}
 
+	std::vector<Kinematic> GetCorners()
+	{
+		return mCorners;
+	}
+
 private:
 	SeekDynamicArrive mSeekArrive;
 	DynamicSeekSteering mSeek;

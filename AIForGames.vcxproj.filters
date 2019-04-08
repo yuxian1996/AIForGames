@@ -188,6 +188,18 @@
     <ClInclude Include="src\DecisionMaking\Actions\Action_OutputMessage.h">
       <Filter>src\DecisionMaking\Actions</Filter>
     </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_Wait.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_ChangeTarget.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToTarget.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToPlayer.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

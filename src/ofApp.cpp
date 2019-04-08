@@ -313,20 +313,31 @@ void ofApp::setup(){
 			sGrid = Grid::LoadFromImage("download.png");
 
 			Kinematic kinematic(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
-			mpBoid = new Boid(kinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
-			spPathFollow = new PathFollow(mpBoid, sPath);
-			mpBoid->mpDynamicSteering = spPathFollow;
-			auto alignSteering = new KinematicAlignSteering(mpBoid);
-			mpBoid->mpKinematicOrientationSteering = alignSteering;
+			auto pBoid = new Boid(kinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+			//spPathFollow = new PathFollow(mpBoid, sPath);
+			//mpBoid->mpDynamicSteering = spPathFollow;
+			auto alignSteering = new KinematicAlignSteering(pBoid);
+			pBoid->mpKinematicOrientationSteering = alignSteering;
+			pBoid->mpTarget = new Kinematic(pBoid->mKinematic);
 
-			auto scene = new Scene({ mpBoid });
+			Kinematic playerKinematic(glm::vec2(600, 600), 0, glm::vec2(0, 0), 0);
+			mpPlayer = new Boid(playerKinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+			spPathFollow = new PathFollow(mpPlayer, sPath);
+			mpPlayer->mpDynamicSteering = spPathFollow;
+			auto playerAlign = new KinematicAlignSteering(mpPlayer);
+			mpPlayer->mpKinematicOrientationSteering = playerAlign;
+			//player->mpTarget = new Kinematic(player->mKinematic);
+
+			auto scene = new Scene({ pBoid }, nullptr, mpPlayer);
 			mpScenes.push_back(scene);
 
 			DT_Wanderer* tree = new DT_Wanderer();
 			tree->Init();
 			
-			sActionManager = new ActionManager();
-			sActionManager->Init(tree, new Context(mpBoid));
+			auto actionManager = new ActionManager();
+			actionManager->Init(tree, new Context(pBoid));
+
+			pBoid->mpActionManager = actionManager;
 			
 		}
 	}
@@ -454,6 +465,9 @@ void ofApp::setup(){
 void ofApp::update(){
 	if(mSceneIndex >= 0 && mSceneIndex < mpScenes.size())
 		mpScenes[mSceneIndex]->Update(ofGetLastFrameTime());
+
+	//sActionManager->Run(ofGetLastFrameTime());
+
 }
 
 //--------------------------------------------------------------
@@ -525,7 +539,7 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 	// find path
 	int index = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
-	int mpBoidIndex = sGrid->GetGridWidth() * ((int)mpBoid->mKinematic.position.y / sGrid->GetGridSize()) + (int)mpBoid->mKinematic.position.x / sGrid->GetGridSize();
+	int mpBoidIndex = sGrid->GetGridWidth() * ((int)mpPlayer->mKinematic.position.y / sGrid->GetGridSize()) + (int)mpPlayer->mKinematic.position.x / sGrid->GetGridSize();
 	sGrid->FindPath(mpBoidIndex, index, GetManhattanDistance_Grid);
 
 	// reset path
@@ -539,7 +553,6 @@ void ofApp::mouseReleased(int x, int y, int button){
 	}
 	spPathFollow->SetPath(sPath);
 
-	sActionManager->Run(1);
 
 }
 
@@ -561,6 +574,27 @@ void ofApp::windowResized(int w, int h){
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
 
+}
+
+std::vector<Kinematic> ofApp::GetPath(glm::vec2 start, glm::vec2 end)
+{
+	// find path
+	int x = (int)end.x, y = (int)end.y;
+	int index = sGrid->GetGridWidth() * (y / sGrid->GetGridSize()) + x / sGrid->GetGridSize();
+	int mpBoidIndex = sGrid->GetGridWidth() * ((int)start.y / sGrid->GetGridSize()) + (int)start.x / sGrid->GetGridSize();
+	sGrid->FindPath(mpBoidIndex, index, GetManhattanDistance_Grid);
+
+	// reset path
+	sPath.clear();
+	std::vector<int> pathIndex = sGrid->GetPath();
+	for (int i = 0; i < pathIndex.size(); i++)
+	{
+		int x = 0, y = 0;
+		sGrid->GirdIndexToXY(pathIndex[i], x, y);
+		sPath.push_back(Kinematic(glm::vec2(x, y), 0, glm::vec2(0, 0), 0));
+	}
+
+	return sPath;
 }
 
 //--------------------------------------------------------------

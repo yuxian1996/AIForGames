@@ -205,7 +205,11 @@
     <ClInclude Include="src\Boid.h" />
     <ClInclude Include="src\DecisionMaking\Action.h" />
     <ClInclude Include="src\DecisionMaking\ActionManager.h" />
+    <ClInclude Include="src\DecisionMaking\Actions\Action_ChangeTarget.h" />
+    <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToPlayer.h" />
+    <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToTarget.h" />
     <ClInclude Include="src\DecisionMaking\Actions\Action_OutputMessage.h" />
+    <ClInclude Include="src\DecisionMaking\Actions\Action_Wait.h" />
     <ClInclude Include="src\DecisionMaking\Context.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTActionNode.h" />

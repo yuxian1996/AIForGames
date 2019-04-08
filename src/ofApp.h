@@ -27,10 +27,12 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 
+	static std::vector<Kinematic> GetPath(glm::vec2 start, glm::vec2 end);
+
 
 private:
 	std::vector<Scene*> mpScenes;
-	Boid* mpBoid;
+	Boid* mpPlayer;
 	const int WIDTH = 1024;
 	const int HEIGHT = 768;
 	Kinematic mSeekTarget;
