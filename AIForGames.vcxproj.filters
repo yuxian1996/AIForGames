@@ -58,6 +58,9 @@
     <ClCompile Include="src\DecisionMaking\ActionManager.cpp">
       <Filter>src\DecisionMaking</Filter>
     </ClCompile>
+    <ClCompile Include="src\DecisionMaking\BehaviorTree\BTNode.cpp">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -83,6 +86,12 @@
     </Filter>
     <Filter Include="src\DecisionMaking\Actions">
       <UniqueIdentifier>{eacef38d-7ecc-4dc6-9de3-1b4ecc979ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\DecisionMaking\BehaviorTree">
+      <UniqueIdentifier>{be6568be-9723-4f68-87b7-8be3cbcd8b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\DecisionMaking\BehaviorTree\Nodes">
+      <UniqueIdentifier>{521e38a6-405f-4253-9c27-50c36964f965}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +208,30 @@
     </ClInclude>
     <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToPlayer.h">
       <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BehaviorTree.h">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BTNode.h">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BTTick.h">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Blackboard.h">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_PerformAction.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Selector.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Composite.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Sequence.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

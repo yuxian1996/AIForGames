@@ -182,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="src\Boid.cpp" />
     <ClCompile Include="src\DecisionMaking\ActionManager.cpp" />
+    <ClCompile Include="src\DecisionMaking\BehaviorTree\BTNode.cpp" />
     <ClCompile Include="src\Graph\Graph.cpp" />
     <ClCompile Include="src\Graph\Grid.cpp" />
     <ClCompile Include="src\Kinematic.cpp" />
@@ -210,6 +211,14 @@
     <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToTarget.h" />
     <ClInclude Include="src\DecisionMaking\Actions\Action_OutputMessage.h" />
     <ClInclude Include="src\DecisionMaking\Actions\Action_Wait.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BehaviorTree.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Blackboard.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BTNode.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BTTick.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Composite.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_PerformAction.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Selector.h" />
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Sequence.h" />
     <ClInclude Include="src\DecisionMaking\Context.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DecisionTree.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTActionNode.h" />
