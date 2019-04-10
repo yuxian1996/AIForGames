@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "Boid.h"
+#include <glm/glm.hpp>
 
 Scene::Scene(const std::vector<Boid*>& ipBoids, Group* ipGroup, Boid * ipPlayer)
 {
@@ -12,6 +13,8 @@ Scene::Scene(const std::vector<Boid*>& ipBoids, Group* ipGroup, Boid * ipPlayer)
 		pBoid->mpPlayer = ipPlayer;
 	}
 	mpGroup = ipGroup;
+	if(mpPlayer)
+		initalPlayer = mpPlayer->mKinematic;
 }
 
 Scene::~Scene()
@@ -44,6 +47,15 @@ void Scene::Update(float inDeltaTime)
 
 	if(mpPlayer)
 		mpPlayer->Update(inDeltaTime);
+
+	for (auto pBoid : mpBoids)
+	{
+		if (glm::distance(pBoid->GetKinematic()->position, mpPlayer->GetKinematic()->position) <= 20)
+		{
+			// restart
+			Reset();
+		}
+	}
 }
 
 void Scene::Draw()
@@ -63,4 +75,7 @@ void Scene::Reset()
 	{
 		mpBoids[i]->mKinematic = initalKinematics[i];
 	}
+
+	if (mpPlayer != nullptr)
+		mpPlayer->mKinematic = initalPlayer;
 }

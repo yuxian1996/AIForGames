@@ -2,6 +2,7 @@
 
 #include "Action.h"
 #include "DecisionTree/DecisionTree.h"
+#include "BehaviorTree/BehaviorTree.h"
 
 #include <set>
 #include <vector>
@@ -22,7 +23,7 @@ public:
 	ActionManager() = default;
 	~ActionManager() = default;
 
-	void Init(DecisionTree* ipDecisionTree, Context* ipContext);
+	void Init(DecisionTree* ipDecisionTree, Context* ipContext, BehaviorTree* ipBehaviorTree);
 	void Run(float inDeltaTime);
 	void AddAction(std::shared_ptr<Action>);
 
@@ -35,5 +36,6 @@ private:
 
 	DecisionTree* mpDecisionTree;
 	Context* mpContext;
+	BehaviorTree* mpBehaviorTree;
 
 };

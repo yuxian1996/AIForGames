@@ -4,12 +4,12 @@
 #include "../../Steering/ComplexSteering/PathFollow.h"
 #include "../../ofApp.h"
 
-class Action_MoveToTarget : public Action
+class Action_StartMoving : public Action
 {
 public:
-	Action_MoveToTarget(const float inExpireTime, const float inExecuteTime, const uint8_t inPriority = 0) 
+	Action_StartMoving(const float inExpireTime, const float inExecuteTime, const uint8_t inPriority = 0) 
 		: Action(inExpireTime, inExecuteTime, inPriority) {}
-	virtual ~Action_MoveToTarget() override = default;
+	virtual ~Action_StartMoving() override = default;
 
 	virtual void OnActionExecute(Context* ipContext) override
 	{

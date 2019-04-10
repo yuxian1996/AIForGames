@@ -24,7 +24,7 @@ protected:
 		for (int i = runningChild; i < children.size(); i++)
 		{
 			BT_State state = children[i]->Run(inTick);
-			if (state == BT_State::FAILURE)
+			if (state != BT_State::FAILURE)
 			{
 				if (state == BT_State::RUNNING)
 					inTick.GetBlackboard()->Set("runningChild", i, ID);

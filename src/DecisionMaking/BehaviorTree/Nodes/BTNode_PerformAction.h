@@ -11,6 +11,8 @@ public:
 	BTNode_PerformAction() = default;
 	virtual ~BTNode_PerformAction() override = default;
 
+	void SetAction(std::shared_ptr<Action> inAction) { mAction = inAction; }
+
 	virtual BT_State OnExecute(BTTick inTick) override
 	{
 		inTick.GetBlackboard()->Set("Action", mAction);

@@ -203,9 +203,6 @@
     <ClInclude Include="src\DecisionMaking\Actions\Action_ChangeTarget.h">
       <Filter>src\DecisionMaking\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToTarget.h">
-      <Filter>src\DecisionMaking\Actions</Filter>
-    </ClInclude>
     <ClInclude Include="src\DecisionMaking\Actions\Action_MoveToPlayer.h">
       <Filter>src\DecisionMaking\Actions</Filter>
     </ClInclude>
@@ -231,6 +228,18 @@
       <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Sequence.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Decorator.h">
+      <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\BT_Wander.h">
+      <Filter>src\DecisionMaking\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Actions\Action_StartMoving.h">
+      <Filter>src\DecisionMaking\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Wait.h">
       <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
     </ClInclude>
   </ItemGroup>

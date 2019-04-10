@@ -39,7 +39,7 @@ void BTNode::Exit(BTTick inTick)
 BT_State BTNode::Run(BTTick inTick)
 {
 	Enter(inTick);
-	bool isOpen = inTick.GetBlackboard()->Get("isOpen", ID);
+	bool isOpen = *reinterpret_cast<bool*>(inTick.GetBlackboard()->Get("isOpen", ID));
 	if (!isOpen)
 		Open(inTick);
 	BT_State state = Execute(inTick);

@@ -17,22 +17,21 @@ public:
 		Kinematic* target = const_cast<Kinematic*>(boid->mpTarget);
 		if (target)
 		{
-			while (true)
-			{
-				float x = (float)rand() / RAND_MAX * 800;
-				float y = (float)rand() / RAND_MAX * 800;
-				target->position = glm::vec2(x, y);
 
-				std::vector<Kinematic> path = ofApp::GetPath(boid->GetKinematic()->position, target->position);
-				if (path.size() > 0)
-				{
-					PathFollow* steering = dynamic_cast<PathFollow*>(boid->mpDynamicSteering);
-					if (steering)
-					{
-						steering->SetPath(path);
-					}
-					break;
-				}
+			float x = (float)rand() / RAND_MAX * 800;
+			float y = (float)rand() / RAND_MAX * 800;
+			target->position = glm::vec2(x, y);
+
+			std::vector<Kinematic> path = ofApp::GetPath(boid->GetKinematic()->position, target->position);
+			if (path.size() == 0)
+			{
+				path.push_back(*boid->GetKinematic());
+			}
+
+			PathFollow* steering = dynamic_cast<PathFollow*>(boid->mpDynamicSteering);
+			if (steering)
+			{
+				steering->SetPath(path);
 			}
 
 		}

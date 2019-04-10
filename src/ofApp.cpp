@@ -17,6 +17,8 @@
 
 #include "DecisionMaking/DecisionTree/DT_Wanderer.h"
 #include "DecisionMaking/ActionManager.h"
+#include "DecisionMaking/BehaviorTree/BT_Wander.h"
+#include "DecisionMaking/BehaviorTree/Blackboard.h"
 
 #include <graphics/ofGraphics.h>
 #include <functional>
@@ -312,32 +314,51 @@ void ofApp::setup(){
 		{
 			sGrid = Grid::LoadFromImage("download.png");
 
-			Kinematic kinematic(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
-			auto pBoid = new Boid(kinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
-			//spPathFollow = new PathFollow(mpBoid, sPath);
-			//mpBoid->mpDynamicSteering = spPathFollow;
-			auto alignSteering = new KinematicAlignSteering(pBoid);
-			pBoid->mpKinematicOrientationSteering = alignSteering;
-			pBoid->mpTarget = new Kinematic(pBoid->mKinematic);
+			std::vector<Boid*> boids;
+			// add monsters
+			for (int i = 0; i < 5; i++)
+			{
+				Kinematic kinematic1(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
+				auto pBoid1 = new Boid(kinematic1, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+				auto alignSteering1 = new KinematicAlignSteering(pBoid1);
+				pBoid1->mpKinematicOrientationSteering = alignSteering1;
+				pBoid1->mpTarget = new Kinematic(pBoid1->mKinematic);
+
+				boids.push_back(pBoid1);
+
+				BT_Wander* BT1 = new BT_Wander();
+				BT1->Init();
+
+				auto actionManager1 = new ActionManager();
+				actionManager1->Init(nullptr, new Context(pBoid1), BT1);
+
+				pBoid1->mpActionManager = actionManager1;
+
+			}
+
+			//Kinematic kinematic2(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
+			//auto pBoid2 = new Boid(kinematic2, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+			//auto alignSteering2 = new KinematicAlignSteering(pBoid2);
+			//pBoid2->mpKinematicOrientationSteering = alignSteering2;
+			//pBoid2->mpTarget = new Kinematic(pBoid2->mKinematic);
+
 
 			Kinematic playerKinematic(glm::vec2(600, 600), 0, glm::vec2(0, 0), 0);
-			mpPlayer = new Boid(playerKinematic, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+			mpPlayer = new Boid(playerKinematic, nullptr, 120, 10, 2000, 20, 10, 70, 0.1f);
+			mpPlayer->SetColor(ofColor::red);
 			spPathFollow = new PathFollow(mpPlayer, sPath);
 			mpPlayer->mpDynamicSteering = spPathFollow;
 			auto playerAlign = new KinematicAlignSteering(mpPlayer);
 			mpPlayer->mpKinematicOrientationSteering = playerAlign;
 			//player->mpTarget = new Kinematic(player->mKinematic);
 
-			auto scene = new Scene({ pBoid }, nullptr, mpPlayer);
+			auto scene = new Scene(boids, nullptr, mpPlayer);
 			mpScenes.push_back(scene);
 
-			DT_Wanderer* tree = new DT_Wanderer();
-			tree->Init();
+			/*DT_Wanderer* tree = new DT_Wanderer();
+			tree->Init();*/
 			
-			auto actionManager = new ActionManager();
-			actionManager->Init(tree, new Context(pBoid));
 
-			pBoid->mpActionManager = actionManager;
 			
 		}
 	}

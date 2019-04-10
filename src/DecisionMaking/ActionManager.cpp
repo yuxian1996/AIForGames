@@ -2,16 +2,27 @@
 
 #include <algorithm>
 
-void ActionManager::Init(DecisionTree * ipDecisionTree, Context * ipContext)
+void ActionManager::Init(DecisionTree * ipDecisionTree, Context * ipContext, BehaviorTree* ipBehaviorTree)
 {
 	mpDecisionTree = ipDecisionTree;
 	mpContext = ipContext;
+	mpBehaviorTree = ipBehaviorTree;
 }
 
 void ActionManager::Run(float inDeltaTime)
 {
-	auto action = mpDecisionTree->GetAction(mpContext);
-	AddAction(action);
+	std::shared_ptr<Action> action = nullptr;
+	if (mpDecisionTree != nullptr)
+	{
+		action = mpDecisionTree->GetAction(mpContext);
+	}
+	else if (mpBehaviorTree != nullptr)
+	{
+		action = mpBehaviorTree->GetAction(mpContext);
+	}
+
+	if(action != nullptr)
+		AddAction(action);
 
 	RunAction(inDeltaTime);
 }

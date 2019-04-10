@@ -23,4 +23,5 @@ private:
 	std::vector<Boid*> mpBoids;
 	Group* mpGroup;
 	std::vector<Kinematic> initalKinematics;
+	Kinematic initalPlayer;
 };

@@ -9,7 +9,7 @@ enum class BT_State : uint8_t
 	SUCCESS,
 	FAILURE,
 	RUNNING,
-	ERROR
+	BTERROR
 };
 
 class BTNode
@@ -29,11 +29,12 @@ public:
 	BT_State Run(BTTick inTick);
 
 	uint8_t GetID() { return ID; }
+	void SetID(uint8_t id) { ID = id; }
 
 protected:
 	virtual void OnEnter(BTTick inTick) {}
 	virtual void OnOpen(BTTick inTick) {}
-	virtual BT_State OnExecute(BTTick inTick) {}
+	virtual BT_State OnExecute(BTTick inTick) { return BT_State::SUCCESS; }
 	virtual void OnClose(BTTick inTick) {}
 	virtual void OnExit(BTTick inTick) {}
 
