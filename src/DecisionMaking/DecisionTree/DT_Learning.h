@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #include "DecisionTree.h"
 #include "DTDecisionNode_Bool.h"
@@ -10,45 +11,14 @@
 #include "../Actions/Action_Wait.h"
 #include "../Context.h"
 #include "../../Boid.h"
+#include "DT_Wanderer.h"
 
-namespace DT_Action
-{
-	bool TestFunc(const Context* ipContext)
-	{
-		auto owner = ipContext->GetOwner();
-		return owner->GetKinematic()->velocity.x >= 0;
-	}
 
-	bool ReachTarget(const Context* ipContext)
-	{
-		auto owner = ipContext->GetOwner();
-		PathFollow* steering = dynamic_cast<PathFollow*>(owner->mpDynamicSteering);
-
-		if (owner->mpTarget == nullptr || steering == nullptr)
-			return false;
-		auto corners = steering->GetCorners();
-		if (
-			glm::distance(owner->GetKinematic()->position, corners[corners.size() - 1].position) <= 10.0f)
-			return true;
-		return false;
-	}
-
-	bool IsPlayerNear(const Context* ipContext)
-	{
-		auto owner = ipContext->GetOwner();
-		auto player = owner->mpPlayer;
-
-		if (glm::distance(owner->GetKinematic()->position, player->GetKinematic()->position) <= 200.0f)
-			return true;
-		return false;
-	}
-}
-
-class DT_Wanderer : public DecisionTree
+class DT_Learning : public DecisionTree
 {
 public:
-	DT_Wanderer() = default;
-	virtual ~DT_Wanderer() override = default;
+	DT_Learning() = default;
+	virtual ~DT_Learning() override = default;
 
 	virtual void Init() override
 	{
@@ -65,6 +35,5 @@ public:
 		auto bottomNode = new DTDecisionNode_Bool(moveToTargetNode, changeTargetNode, DT_Action::ReachTarget);
 		mpRoot = new DTDecisionNode_Bool(bottomNode, moveToPlayerNode, DT_Action::IsPlayerNear);
 	}
-
 
 };

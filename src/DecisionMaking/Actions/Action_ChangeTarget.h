@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Action.h"
+#include "../../ofApp.h"
 
 class Action_ChangeTarget : public Action
 {

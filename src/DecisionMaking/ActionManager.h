@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 
+class ID3;
 class ActionCompare
 {
 public:
@@ -30,6 +31,8 @@ public:
 	std::set<std::shared_ptr<Action>, ActionCompare> mQueuedActions;
 	std::shared_ptr<Action> mpCurrentAction;
 	std::vector<std::shared_ptr<Action>> mPendingExpiredActions;
+
+	ID3* id3 = nullptr;
 
 private:
 	void RunAction(float inDeltaTime);

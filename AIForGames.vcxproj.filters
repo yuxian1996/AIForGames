@@ -93,6 +93,9 @@
     <Filter Include="src\DecisionMaking\BehaviorTree\Nodes">
       <UniqueIdentifier>{521e38a6-405f-4253-9c27-50c36964f965}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\DecisionMaking\Learning">
+      <UniqueIdentifier>{884be108-f41a-43c1-b1d1-e1d99aa5af09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h">
@@ -241,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="src\DecisionMaking\BehaviorTree\Nodes\BTNode_Wait.h">
       <Filter>src\DecisionMaking\BehaviorTree\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\Learning\ID3.h">
+      <Filter>src\DecisionMaking\Learning</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DT_Learning.h">
+      <Filter>src\DecisionMaking\DecisionTree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

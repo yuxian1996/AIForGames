@@ -230,7 +230,9 @@
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_Enum.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTDecisionNode_FloatRange.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DTNode.h" />
+    <ClInclude Include="src\DecisionMaking\DecisionTree\DT_Learning.h" />
     <ClInclude Include="src\DecisionMaking\DecisionTree\DT_Wanderer.h" />
+    <ClInclude Include="src\DecisionMaking\Learning\ID3.h" />
     <ClInclude Include="src\Graph\Edge.h" />
     <ClInclude Include="src\Graph\Graph.h" />
     <ClInclude Include="src\Graph\Grid.h" />

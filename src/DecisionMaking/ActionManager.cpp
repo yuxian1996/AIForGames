@@ -1,5 +1,7 @@
 #include "ActionManager.h"
+#include "Learning/ID3.h"
 
+#include <chrono>
 #include <algorithm>
 
 void ActionManager::Init(DecisionTree * ipDecisionTree, Context * ipContext, BehaviorTree* ipBehaviorTree)
@@ -7,22 +9,48 @@ void ActionManager::Init(DecisionTree * ipDecisionTree, Context * ipContext, Beh
 	mpDecisionTree = ipDecisionTree;
 	mpContext = ipContext;
 	mpBehaviorTree = ipBehaviorTree;
+
+	//id3 = new ID3;
+	//id3->Init();
 }
 
 void ActionManager::Run(float inDeltaTime)
 {
+	static int DTTime = 0;
+	static int BTTime = 0;
+	static int BTCount = 0;
+	static int DTCount = 0;
 	std::shared_ptr<Action> action = nullptr;
 	if (mpDecisionTree != nullptr)
 	{
+		auto beginClock = std::chrono::high_resolution_clock::now();
 		action = mpDecisionTree->GetAction(mpContext);
+		auto endClock = std::chrono::high_resolution_clock::now();
+		DTTime += std::chrono::duration_cast<std::chrono::microseconds>(endClock - beginClock).count();
+		DTCount++;
+
+		std::cout << "DTTime: " << (float)DTTime / DTCount << std::endl;
+
 	}
 	else if (mpBehaviorTree != nullptr)
 	{
+		auto beginClock = std::chrono::high_resolution_clock::now();
 		action = mpBehaviorTree->GetAction(mpContext);
+		auto endClock = std::chrono::high_resolution_clock::now();
+		BTTime += std::chrono::duration_cast<std::chrono::microseconds>(endClock - beginClock).count();
+		BTCount++;
+
+		std::cout << "BTTime: " << (float)BTTime / BTCount << std::endl;
+
 	}
 
-	if(action != nullptr)
+
+	if (action != nullptr)
+	{
 		AddAction(action);
+		id3->SaveAttribute(mpContext);
+		id3->SaveAction(action);
+	}
 
 	RunAction(inDeltaTime);
 }

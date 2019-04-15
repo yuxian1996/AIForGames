@@ -19,6 +19,9 @@
 #include "DecisionMaking/ActionManager.h"
 #include "DecisionMaking/BehaviorTree/BT_Wander.h"
 #include "DecisionMaking/BehaviorTree/Blackboard.h"
+#include "DecisionMaking/DecisionTree/DT_Learning.h"
+
+#include "DecisionMaking/Learning/ID3.h"
 
 #include <graphics/ofGraphics.h>
 #include <functional>
@@ -82,6 +85,7 @@ namespace
 
 
 ActionManager* sActionManager = nullptr;
+ID3* spID3 = nullptr;
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
@@ -315,8 +319,8 @@ void ofApp::setup(){
 			sGrid = Grid::LoadFromImage("download.png");
 
 			std::vector<Boid*> boids;
-			// add monsters
-			for (int i = 0; i < 5; i++)
+			// BT
+			for (int i = 0; i < 1; i++)
 			{
 				Kinematic kinematic1(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
 				auto pBoid1 = new Boid(kinematic1, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
@@ -332,8 +336,36 @@ void ofApp::setup(){
 				auto actionManager1 = new ActionManager();
 				actionManager1->Init(nullptr, new Context(pBoid1), BT1);
 
-				pBoid1->mpActionManager = actionManager1;
+				spID3 = new ID3;
+				spID3->Init();
+				actionManager1->id3 = spID3;
 
+				pBoid1->mpActionManager = actionManager1;
+			}
+
+			// DT
+			{
+				Kinematic kinematic1(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
+				auto pBoid1 = new Boid(kinematic1, nullptr, 60, 10, 1000, 10, 10, 70, 0.1f);
+				auto alignSteering1 = new KinematicAlignSteering(pBoid1);
+				pBoid1->mpKinematicOrientationSteering = alignSteering1;
+				pBoid1->mpTarget = new Kinematic(pBoid1->mKinematic);
+				pBoid1->SetColor(ofColor::green);
+
+				boids.push_back(pBoid1);
+
+				DT_Learning* tree = new DT_Learning();
+				tree->Init();
+
+				auto actionManager1 = new ActionManager();
+				actionManager1->Init(tree, new Context(pBoid1), nullptr);
+
+
+				spID3 = new ID3;
+				spID3->Init();
+				actionManager1->id3 = spID3;
+
+				pBoid1->mpActionManager = actionManager1;
 			}
 
 			//Kinematic kinematic2(glm::vec2(205, 185), 0, glm::vec2(0, 0), 0);
@@ -355,8 +387,7 @@ void ofApp::setup(){
 			auto scene = new Scene(boids, nullptr, mpPlayer);
 			mpScenes.push_back(scene);
 
-			/*DT_Wanderer* tree = new DT_Wanderer();
-			tree->Init();*/
+
 			
 
 			
@@ -530,6 +561,12 @@ void ofApp::keyPressed(int key){
 		mSceneIndex = index;
 		mpScenes[mSceneIndex]->Reset();
 	}
+
+	if (key == '0')
+	{
+		spID3->Finish();
+		spID3->Train();
+	}
 }
 
 //--------------------------------------------------------------
@@ -574,7 +611,7 @@ void ofApp::mouseReleased(int x, int y, int button){
 	}
 	spPathFollow->SetPath(sPath);
 
-
+	//spID3->Finish();
 }
 
 //--------------------------------------------------------------
